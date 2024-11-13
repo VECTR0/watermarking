@@ -1,2 +1,7 @@
+numpy
 Pillow
 kagglehub
+opencv-python
+scikit-learn
+scikit-image
+invisible-watermark
