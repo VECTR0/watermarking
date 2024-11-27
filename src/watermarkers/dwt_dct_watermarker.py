@@ -1,5 +1,6 @@
 from src.dto import Dto, ImageType
-from src.watermarker import Watermarker, WatermarkInvisibleMethod
+from src.watermarker import Watermarker
+from src.watermarker_invisible import WatermarkInvisibleMethod
 
 
 class BasicWatermarker(Watermarker):
@@ -13,10 +14,8 @@ class BasicWatermarker(Watermarker):
         assert isinstance(watermark, str), ":-()"
 
         watermarked_image = WatermarkInvisibleMethod.DWT_DCT.encode(image, watermark)
-        decoded_watermark = WatermarkInvisibleMethod.DWT_DCT.decode(watermarked_image)
 
         new_dto = dto.copy()
         new_dto.watermarked_image = watermarked_image
-        new_dto.decoded_watermark = decoded_watermark
 
         return new_dto
