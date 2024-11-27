@@ -1,12 +1,14 @@
 import json
+import typing
+
 from src.dto import Dto
 
 
 class DtoSaver:
-    def __init__(self):
-        self._current_list = []
+    def __init__(self) -> None:
+        self._current_list: list[dict[str, typing.Any]] = []
 
-    def add(self, dto: Dto):
+    def add(self, dto: Dto) -> None:
         self._current_list.append(
             {
                 "filepath": dto.filepath,
@@ -15,7 +17,7 @@ class DtoSaver:
             }
         )
 
-    def save_to_file(self, filename: str, clear_current_list=False):
+    def save_to_file(self, filename: str, *, clear_current_list: bool = False) -> None:
         try:
             with open(filename, "w") as file:
                 json.dump(self._current_list, file, indent=4)

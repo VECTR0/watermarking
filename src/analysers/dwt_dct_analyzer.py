@@ -2,7 +2,7 @@ from src.analyser import Analyser
 from src.dto import AnalysisResults, Dto
 
 
-class BasicAnalyser(Analyser):
+class DwtDctAnalyser(Analyser):
     def __init__(self) -> None:
         super().__init__()
 

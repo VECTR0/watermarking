@@ -4,9 +4,11 @@ PYTHON := $(VENV)/bin/python
 PIP := $(PYTHON) -m pip
 SCRIPT := main.py
 RUFF := ruff
+PYTEST := pytest
+MYPY := mypy
 
 # Targets
-.PHONY: all setup run clean help
+.PHONY: all setup run clean help format lint test type-check
 
 # Default target: sets up the environment, installs dependencies, and runs the script
 all: setup run
@@ -46,3 +48,11 @@ format:
 lint:
 	@echo "Linting with ruff..."
 	$(RUFF) check
+
+test:
+	@echo "Running tests..."
+	$(PYTEST) -rP
+
+type-check:
+	@echo "Running mypy..."
+	$(MYPY) . --strict

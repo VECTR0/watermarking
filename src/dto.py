@@ -1,23 +1,38 @@
-AnalysisResults = dict[str,float|str]
+import copy
+
+import numpy as np
+
+AnalysisResults = dict[str, float | str]
+ImageType = np.ndarray
+
 
 class Dto:
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str) -> None:
+        # TODO: Optional None troche niewygodny - może wymusić w niektórych metodach aby nie był None?
+        # TODO: watermarked_image i attacked_image - to path czy obraz w pamięci?
         self.filepath = filepath
         self.loaded_image = self.load_image()
-        self.watermarked_image = None
+
+        self.watermarked_image: ImageType | None = None
+        self.watermark: str | None = None
+        self.decoded_watermark: str | None = None
         self.watermarked_analysis_results: list[AnalysisResults] = []
-        self.attacked_image = None
+
+        self.attacked_image: ImageType | None = None
         self.attacked_analysis_results: list[AnalysisResults] = []
 
-    def load_image(self):
+    def load_image(self) -> str:
         print(f"Loading image from {self.filepath}")
         return f"Image({self.filepath})"
 
-    def save(self):
+    def save(self) -> None:
         print(f"Saving analysis results for {self.filepath}...")
 
-    def add_watermarked_results(self, results: AnalysisResults):
+    def add_watermarked_results(self, results: AnalysisResults) -> None:
         self.watermarked_analysis_results.append(results)
 
-    def add_attacked_results(self, results: AnalysisResults):
+    def add_attacked_results(self, results: AnalysisResults) -> None:
         self.attacked_analysis_results.append(results)
+
+    def copy(self) -> "Dto":
+        return copy.deepcopy(self)
