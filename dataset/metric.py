@@ -93,3 +93,54 @@ if __name__ == "__main__":
     print("NCC (Robustness):", ncc_value)
     print("Bit Error Rate (BER):", ber_value)
     print("RMSE (Compression Impact):", rmse_value)
+
+    #
+    # another file
+    #
+    
+'''
+
+'''
+
+    
+    def benchmark(img):
+        pass
+    
+    # Apply attacks from attack.py
+    from attack import (
+        blur_filter,
+        sharpen_filter,
+        median_filter,
+        jpeg_compression,
+        add_salt_and_pepper_noise,
+        add_gaussian_noise,
+        crop_image,
+        resize_image,
+        histogram_equalization,
+        intensity_modification,
+    )
+
+    # Apply different attacks
+    attacked_images = {
+        "blurred": blur_filter(watermarked_img),
+        "sharpened": sharpen_filter(watermarked_img),
+        "median_filtered": median_filter(watermarked_img),
+        "compressed": jpeg_compression(watermarked_img),
+        "salt_pepper_noisy": add_salt_and_pepper_noise(watermarked_img),
+        "gaussian_noisy": add_gaussian_noise(watermarked_img),
+        "cropped": crop_image(watermarked_img),
+        "resized": resize_image(watermarked_img),
+        "equalized": histogram_equalization(watermarked_img),
+        "intensity_modified": intensity_modification(watermarked_img),
+    }
+
+    # Evaluate metrics for each attacked image
+    for attack_name, attacked_img in attacked_images.items():
+        psnr_value = psnr(original_img, attacked_img)
+        ssim_value = calculate_ssim(original_img, attacked_img)
+        rmse_value = rmse(original_img, attacked_img)
+        print(f"Attack: {attack_name}")
+        print(f"PSNR: {psnr_value}")
+        print(f"SSIM: {ssim_value}")
+        print(f"RMSE: {rmse_value}")
+        print("-" * 30)

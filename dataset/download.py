@@ -1,6 +1,7 @@
 from kagglehub import dataset_download
 
 # ~/.cache/kagglehub/datasets/kamino/largescale-common-watermark-dataset/versions/1
+# ~/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images
 
 KAGLE_DOWNLOAD_PATHS = [
     {

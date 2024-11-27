@@ -1,8 +1,20 @@
+from enum import Enum
+from typing import Callable
 import cv2
 import numpy as np
 
 # Type alias for image arrays (grayscale or RGB)
 ImageArray = np.ndarray
+
+
+class WatermarkAttack(Enum):
+    BLUR = "blur"
+    SHARPEN = "sharpen"
+    MEDIAN = "median"
+    JPEG_COMPRESSION = "jpeg_compression"
+    SALT_AND_PEPPER_NOISE = "salt_and_pepper_noise"
+    GAUSSIAN_NOISE = "gaussian_noise"
+
 
 # 1. Filtering (Blurring, Sharpening, Median Filtering)
 
@@ -102,6 +114,19 @@ def intensity_modification(
     """Modify intensity by changing contrast (alpha) and brightness (beta)."""
     modified_image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
     return modified_image
+
+
+attack_functions: dict[WatermarkAttack, tuple[Callable, dict]] = {
+    WatermarkAttack.BLUR: (blur_filter, {"ksize": 5}),
+    WatermarkAttack.SHARPEN: (sharpen_filter, {}),
+    WatermarkAttack.MEDIAN: (median_filter, {"ksize": 5}),
+    WatermarkAttack.JPEG_COMPRESSION: (jpeg_compression, {"quality": 50}),
+    WatermarkAttack.SALT_AND_PEPPER_NOISE: (
+        add_salt_and_pepper_noise,
+        {"amount": 0.01},
+    ),
+    WatermarkAttack.GAUSSIAN_NOISE: (add_gaussian_noise, {"mean": 0, "sigma": 15}),
+}
 
 
 if __name__ == "__main__":
