@@ -3,6 +3,7 @@ VENV := .venv
 PYTHON := $(VENV)/bin/python
 PIP := $(PYTHON) -m pip
 SCRIPT := main.py
+RUFF := ruff
 
 # Targets
 .PHONY: all setup run clean help
@@ -37,3 +38,11 @@ run:
 # Clean up virtual environment and cache files
 clean:
 	rm -rf $(VENV) __pycache__ *.pyc *.pyo
+
+format:
+	@echo "Formating with ruff..."
+	$(RUFF) format
+
+lint:
+	@echo "Linting with ruff..."
+	$(RUFF) check

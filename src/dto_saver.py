@@ -1,0 +1,27 @@
+import json
+from src.dto import Dto
+
+
+class DtoSaver:
+    def __init__(self):
+        self._current_list = []
+
+    def add(self, dto: Dto):
+        self._current_list.append(
+            {
+                "filepath": dto.filepath,
+                "watermarked_analysis_results": dto.watermarked_analysis_results,
+                "attacked_analysis_results": dto.attacked_analysis_results,
+            }
+        )
+
+    def save_to_file(self, filename: str, clear_current_list=False):
+        try:
+            with open(filename, "w") as file:
+                json.dump(self._current_list, file, indent=4)
+            print(f"Data saved to {filename}.")
+        except Exception as e:
+            print(f"Failed to save data: {e}")
+
+        if clear_current_list:
+            self._current_list.clear()
