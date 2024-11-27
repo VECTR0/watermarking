@@ -13,7 +13,7 @@ class BasicWatermarker(Watermarker):
         print("Applying Basic Watermark...")
         return (np.ones((64, 64, 3), dtype=np.float32) * 100, 1.32)
 
-    def decode(self, dto: Dto) -> DecodingResults:
+    def decode(self, image: np.array) -> DecodingResults:
         print("Decoding Basic Watermark...")
         return ("Basic Watermark", 0.32)
 

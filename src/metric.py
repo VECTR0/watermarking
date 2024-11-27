@@ -1,14 +1,22 @@
 from enum import Enum
-
 import lpips
 import numpy as np
 import torch
+import torchvision.transforms as transforms
 from scipy import stats
 from skimage import img_as_float
 from skimage.measure import shannon_entropy
 from skimage.metrics import structural_similarity as ssim
 
 from src.dto import ImageType
+
+# device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
+
+# Load the model
+# model = torch.hub.load( # TODO fix ftfy
+#     repo_or_dir="miccunifi/QualiCLIP", source="github", model="QualiCLIP"
+# )
+# model.eval().to(device)
 
 
 class LPIPSModel(Enum):
@@ -76,6 +84,7 @@ class ImageMetrics:
             "Mean Squared Error": float(metric.mean_squared_error()),
             "Entropy": float(metric.entropy()),
             "Average Pixel Error": float(metric.average_pixel_error()),
+            # "QualiCLIP": float(metric.quali_clip()),
         }
 
         # LPIPS loss is optional (requires PyTorch and the appropriate model)
@@ -197,8 +206,24 @@ class ImageMetrics:
         loss = self.loss_fn(original_tensor, watermarked_tensor)
         return loss.item()
 
-    def __repr__(self) -> str:
-        return f"ImageMetrics(original_shape={self.original.shape}, watermarked_shape={self.watermarked.shape}, model={self.model.name})"
+    # def quali_clip(self) -> float:
+    #     preprocess = transforms.Compose(
+    #         [
+    #             transforms.ToTensor(),
+    #             transforms.Normalize(
+    #                 mean=[0.48145466, 0.4578275, 0.40821073],
+    #                 std=[0.26862954, 0.26130258, 0.27577711],
+    #             ),
+    #         ]
+    #     )
+    #     img = preprocess(self.watermarked).unsqueeze(0).to(device)
+
+    #     with torch.no_grad(), torch.cuda.amp.autocast():
+    #         score = model(img).item()
+    #     return score
+
+    # def __repr__(self) -> str:
+    #     return f"ImageMetrics(original_shape={self.original.shape}, watermarked_shape={self.watermarked.shape}, model={self.model.name})"
 
 
 # TODO: add RMSE, CLIP - IQA

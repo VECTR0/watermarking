@@ -16,6 +16,8 @@ class DtoSaver:
                 "attacked_analysis_results": dto.attacked_analysis_results,
                 "watermark_method": dto.watermark_method,
                 "attack_method": dto.attack_method,  # TODO add attack and method params logging
+                "encoding_time": dto.encoding_time,
+                "decoding_time": dto.decoding_time,
             }
         )
 

@@ -19,7 +19,7 @@ class Watermarker:
     def encode(self, dto: Dto) -> EncodingResults:
         raise NotImplementedError
 
-    def decode(self, dto: Dto) -> DecodingResults:
+    def decode(self, image: ImageType) -> DecodingResults:
         raise NotImplementedError
 
     def get_name(self) -> str:

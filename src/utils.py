@@ -17,4 +17,5 @@ def measure_time(func: callable, *args, **kwargs):
 
 
 def generate_dummy_image() -> np.array:  # TODO fix type to ImageType
-    return np.ones((64, 64, 3), dtype=np.float32) * 100
+    # TODO: IF smaller than 256x256 remove or skip for Riva Gan
+    return np.ones((256, 256, 3), dtype=np.float32) * 100

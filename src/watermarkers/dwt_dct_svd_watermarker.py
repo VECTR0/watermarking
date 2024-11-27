@@ -4,17 +4,17 @@ from src.watermarker import Watermarker, DecodingResults, EncodingResults
 from src.watermarker_invisible import WatermarkInvisibleMethod
 
 
-class DwtDctWatermarker(Watermarker):
+class DwtDctSvdWatermarker(Watermarker):
     def __init__(self) -> None:
         super().__init__()
 
     def encode(self, dto: Dto) -> EncodingResults:
         image, watermark = dto.source_image, dto.watermark
-        assert isinstance(image, ImageType), "sorry bro" + str(type(image))
+        assert isinstance(image, ImageType), "sorry bro"
         assert isinstance(watermark, str), ":-()"
 
         watermarked_image, time_taken = measure_time(
-            WatermarkInvisibleMethod.DWT_DCT.encode
+            WatermarkInvisibleMethod.DWT_DCT_SVD.encode
         )(image, watermark)
 
         new_dto = dto.copy()
@@ -24,7 +24,7 @@ class DwtDctWatermarker(Watermarker):
         return watermarked_image, time_taken
 
     def decode(self, image: ImageType) -> DecodingResults:
-        decoded, time_taken = measure_time(WatermarkInvisibleMethod.DWT_DCT.decode)(
+        decoded, time_taken = measure_time(WatermarkInvisibleMethod.DWT_DCT_SVD.decode)(
             image
         )
 

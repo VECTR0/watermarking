@@ -10,3 +10,4 @@ lpips
 pytest
 mypy
 torch
+torchvision
