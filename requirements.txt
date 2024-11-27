@@ -9,3 +9,4 @@ scipy
 lpips
 pytest
 mypy
+torch

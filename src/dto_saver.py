@@ -14,6 +14,8 @@ class DtoSaver:
                 "filepath": dto.filepath,
                 "watermarked_analysis_results": dto.watermarked_analysis_results,
                 "attacked_analysis_results": dto.attacked_analysis_results,
+                "watermark_method": dto.watermark_method,
+                "attack_method": dto.attack_method,  # TODO add attack and method params logging
             }
         )
 

@@ -2,15 +2,20 @@ import numpy as np
 
 from src.dto import Dto
 from src.watermarker import Watermarker
+from src.watermarker import DecodingResults, EncodingResults
 
 
 class BasicWatermarker(Watermarker):
     def __init__(self) -> None:
         super().__init__()
 
-    def watermark(self, dto: Dto) -> Dto:
+    def encode(self, dto: Dto) -> EncodingResults:
         print("Applying Basic Watermark...")
+        return (np.ones((64, 64, 3), dtype=np.float32) * 100, 1.32)
 
-        new_dto = dto.copy()
-        new_dto.watermarked_image = np.ones((64, 64, 3), dtype=np.float32) * 100
-        return dto
+    def decode(self, dto: Dto) -> DecodingResults:
+        print("Decoding Basic Watermark...")
+        return ("Basic Watermark", 0.32)
+
+    def get_name(self) -> str:
+        return self.__class__.__name__

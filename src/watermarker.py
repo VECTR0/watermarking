@@ -1,4 +1,7 @@
-from src.dto import Dto
+from src.dto import Dto, ImageType
+
+EncodingResults = tuple[ImageType, float]
+DecodingResults = tuple[str | None, float]
 
 
 class Watermarker:
@@ -11,5 +14,13 @@ class Watermarker:
     def get_all() -> list["Watermarker"]:
         return Watermarker._all_watermarkers
 
-    def watermark(self, dto: Dto) -> Dto:
+    # TODO: super decorator
+    # TODO: move dto.watermark str to arg here
+    def encode(self, dto: Dto) -> EncodingResults:
         raise NotImplementedError
+
+    def decode(self, dto: Dto) -> DecodingResults:
+        raise NotImplementedError
+
+    def get_name(self) -> str:
+        return self.__class__.__name__

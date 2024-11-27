@@ -52,6 +52,42 @@ class ImageMetrics:
 
         self.loss_fn = self.model.get_lpips_model()
 
+    @staticmethod
+    def get_all(
+        source_image: ImageType, watermarked_img: ImageType
+    ) -> dict[str, float]:
+        """
+        Calculate all metrics and return them as a dictionary.
+
+        :return: Dictionary where keys are metric names and values are calculated metric values.
+        """
+        assert (
+            source_image.shape == watermarked_img.shape
+        ), "Images must have the same dimensions."
+        metric = ImageMetrics(source_image, watermarked_img)
+        metrics = {
+            "PSNR": float(metric.psnr()),
+            # "SSIM": metric.ssim(),
+            # "Correlation Coefficient": metric.correlation_coefficient(),
+            "Normalized Correlation Coefficient": float(
+                metric.normalized_correlation_coefficient()
+            ),
+            "Bit Error Rate": float(metric.bit_error_rate()),
+            "Mean Squared Error": float(metric.mean_squared_error()),
+            "Entropy": float(metric.entropy()),
+            "Average Pixel Error": float(metric.average_pixel_error()),
+        }
+
+        # LPIPS loss is optional (requires PyTorch and the appropriate model)
+        try:
+            metrics["LPIPS Loss"] = metric.lpips_loss()
+        except Exception as e:
+            metrics["LPIPS Loss"] = float(
+                "nan"
+            )  # Handle cases where LPIPS calculation fails
+
+        return metrics
+
     def _to_tensor(self, img: ImageType) -> torch.Tensor:
         """
         Convert a numpy image (H, W, C) to a PyTorch tensor (1, C, H, W) normalized to [-1, 1].

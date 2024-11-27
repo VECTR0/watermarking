@@ -1,4 +1,7 @@
 from src.dto import Dto
+from src.dto import ImageType
+
+AttackingResults = ImageType
 
 
 class Attacker:
@@ -11,5 +14,8 @@ class Attacker:
     def get_all() -> list["Attacker"]:
         return Attacker._all_attacks
 
-    def attack(self, dto: Dto) -> Dto:
+    def attack(self, dto: Dto) -> AttackingResults:
         raise NotImplementedError
+
+    def get_name(self) -> str:
+        return self.__class__.__name__

@@ -1,5 +1,9 @@
 from kagglehub import dataset_download
 
+# Datasets downloads here:
+# ~/.cache/kagglehub/datasets/kamino/largescale-common-watermark-dataset/versions/1
+# ~/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images
+
 KAGLE_DOWNLOAD_PATHS = [
     {
         "name": "Large-scale Common Watermark Dataset, 2.32GB",
