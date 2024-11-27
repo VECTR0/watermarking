@@ -9,13 +9,15 @@ ImageType = np.ndarray
 class Dto:
     def __init__(self, filepath: str) -> None:
         # TODO: Optional None troche niewygodny - może wymusić w niektórych metodach aby nie był None?
-        # TODO: watermarked_image i attacked_image - to path czy obraz w pamięci?
         self.filepath = filepath
         self.loaded_image = self.load_image()
 
         self.watermarked_image: ImageType | None = None
         self.watermark: str | None = None
+        self.watermarking_time: float | None = None
+
         self.decoded_watermark: str | None = None
+        self.decoding_time: float | None = None
         self.watermarked_analysis_results: list[AnalysisResults] = []
 
         self.attacked_image: ImageType | None = None

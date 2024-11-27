@@ -1,4 +1,4 @@
-from src.analyser import Analyser
+from src.analyser import Analyser, measure_time
 from src.dto import AnalysisResults, Dto, ImageType
 from src.watermarker_invisible import WatermarkInvisibleMethod
 
@@ -12,10 +12,13 @@ class DwtDctAnalyser(Analyser):
         watermarked_image, watermark = dto.watermarked_image, dto.watermark
         assert isinstance(watermarked_image, ImageType), "sorry bro"
 
-        decoded_watermark = WatermarkInvisibleMethod.DWT_DCT.decode(watermarked_image)
+        decoded_watermark, time_taken = measure_time(
+            WatermarkInvisibleMethod.DWT_DCT.decode(watermarked_image)
+        )
 
         new_dto = dto.copy()
         new_dto.decoded_watermark = decoded_watermark
+        new_dto.decoding_time = time_taken
 
         return {"MyValue": 123.123}
 
