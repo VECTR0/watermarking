@@ -1,18 +1,19 @@
-import os
 import argparse
+import os
+
 from PIL import Image
 
 
-def count_images_and_size(folder_path):
+def count_images_and_size(folder_path: str) -> None:
     image_extensions = {".jpg": 0, ".jpeg": 0, ".png": 0}
     image_sizes = []
     resolutions = []
     total_size = 0
 
     for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            file_lower = file.lower()
-            file_path = os.path.join(root, file)
+        for file_ in files:
+            file_lower = file_.lower()
+            file_path = os.path.join(root, file_)
 
             for ext in image_extensions:
                 if file_lower.endswith(ext):
@@ -58,7 +59,7 @@ def count_images_and_size(folder_path):
     }
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Count images by format, calculate folder size, and gather resolution info."
     )

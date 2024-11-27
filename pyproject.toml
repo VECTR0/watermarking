@@ -2,7 +2,7 @@
 python_version = "3.12"
 strict = true
 exclude = [".venv/"]
-plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
+plugins = ["numpy.typing.mypy_plugin"]
 warn_unreachable = true
 warn_return_any = true
 warn_redundant_casts = true
@@ -43,7 +43,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["ANN101", "ANN102", "D", "FA102", "FIX001", "TD", "INP001", "COM812", "ISC001"]
+ignore = ["ANN101", "ANN102", "D", "FA102", "FIX001", "TD", "INP001", "COM812", "ISC001", "S101"]
 task-tags = ["TODO", "FIXME"]
 
 [tool.ruff.format]

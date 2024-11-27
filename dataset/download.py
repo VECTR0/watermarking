@@ -1,6 +1,5 @@
 from kagglehub import dataset_download
 
-
 KAGLE_DOWNLOAD_PATHS = [
     {
         "name": "Large-scale Common Watermark Dataset, 2.32GB",
