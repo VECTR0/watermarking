@@ -73,8 +73,8 @@ def get_image_paths(
 # TODO make proper dataset loading
 # dataset = ["image1.png"]
 dataset = get_image_paths(
-    "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark"
-    # "~/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/no-watermark"
+    # "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark"
+    "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/no-watermark"
 )
 
 dto_saver = DtoSaver()
@@ -136,5 +136,5 @@ for i, filepath in enumerate(dataset):
             dto_saver.add(attacked_dto)
             # TODO: maybe modify saver class to decrease dto object metric info duplication
 
-    if (i > 0 and i % 1 == 0) or i == len(dataset) - 1:
-        dto_saver.save_to_file(f"output_{i}.json", clear_current_list=True)
+    if (i > 0 and i % 10 == 0) or i == len(dataset) - 1:
+        dto_saver.save_to_file(f"output_no_watermark{i}.json", clear_current_list=True)

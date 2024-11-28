@@ -12,3 +12,5 @@ mypy
 torch
 torchvision
 onnxruntime
+ftfy
+regex
