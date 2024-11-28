@@ -3,6 +3,9 @@ from enum import Enum
 import numpy as np
 from imwatermark import WatermarkDecoder, WatermarkEncoder
 
+# for RivaGAN
+WatermarkEncoder.loadModel()
+
 
 class WatermarkInvisibleMethod(Enum):
     DWT_DCT = "dwtDct"
