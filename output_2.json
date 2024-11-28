@@ -1,0 +1,943 @@
+[
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "BlurAttacker 1",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "BlurAttacker 3",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "JpegCompressionAttacker 5",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "JpegCompressionAttacker 50",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "JpegCompressionAttacker 75",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "NoiseAdditionAttacker 0.1",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "CloneStampAttacker",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "OverlayAttacker",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": Infinity,
+            "Normalized Correlation Coefficient": 4.568177564046237e-08,
+            "Bit Error Rate": 0.0,
+            "Mean Squared Error": 0.0,
+            "Entropy": 6.631994442404793,
+            "Average Pixel Error": 0.0,
+            "LPIPS Loss": 0.0
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "LSBWatermarker",
+        "attack_method": "WarpingAttacker",
+        "encoding_time": 0.3899385929107666,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "BlurAttacker 1",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "BlurAttacker 3",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "JpegCompressionAttacker 5",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "JpegCompressionAttacker 50",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "JpegCompressionAttacker 75",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "NoiseAdditionAttacker 0.1",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "CloneStampAttacker",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "OverlayAttacker",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 51.10128919737319,
+            "Normalized Correlation Coefficient": 4.3538103385628715e-08,
+            "Bit Error Rate": 0.0021596818598959926,
+            "Mean Squared Error": 0.5046048740695421,
+            "Entropy": 7.617778650483854,
+            "Average Pixel Error": 0.5046048740695421,
+            "LPIPS Loss": 0.001113015110604465
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "FFTWatermarker",
+        "attack_method": "WarpingAttacker",
+        "encoding_time": 0.22631239891052246,
+        "decoding_time": null
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 36.99497699263623,
+            "Normalized Correlation Coefficient": 1.3172919887313462e-08,
+            "Bit Error Rate": 0.011950647496686041,
+            "Mean Squared Error": 12.989207708779443,
+            "Entropy": 7.6336870680714455,
+            "Average Pixel Error": 92.90285306413786,
+            "LPIPS Loss": 0.13845738768577576
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "BlurAttacker 1",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 34.38295056931244,
+            "Normalized Correlation Coefficient": 2.9586524971258678e-09,
+            "Bit Error Rate": 0.02081574385642908,
+            "Mean Squared Error": 23.702016926685022,
+            "Entropy": 7.627230494925405,
+            "Average Pixel Error": 105.39900479249516,
+            "LPIPS Loss": 0.268589586019516
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "BlurAttacker 3",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 29.79015865803037,
+            "Normalized Correlation Coefficient": 8.04574266224848e-09,
+            "Bit Error Rate": 0.05254614051187927,
+            "Mean Squared Error": 68.24400326297543,
+            "Entropy": 6.488140517439707,
+            "Average Pixel Error": 115.67771795656164,
+            "LPIPS Loss": 0.5325576066970825
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "JpegCompressionAttacker 5",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 36.04254921781598,
+            "Normalized Correlation Coefficient": 7.842427121176764e-09,
+            "Bit Error Rate": 0.015076985826450494,
+            "Mean Squared Error": 16.17429795044356,
+            "Entropy": 7.634615789204064,
+            "Average Pixel Error": 107.47799123075355,
+            "LPIPS Loss": 0.0725800022482872
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "JpegCompressionAttacker 50",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 48.666846068852,
+            "Normalized Correlation Coefficient": 3.746269728327396e-08,
+            "Bit Error Rate": 0.0018517385540940145,
+            "Mean Squared Error": 0.8838849801162435,
+            "Entropy": 7.627819250948996,
+            "Average Pixel Error": 24.06268379728765,
+            "LPIPS Loss": 0.003721277229487896
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "JpegCompressionAttacker 75",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 42.56738252211021,
+            "Normalized Correlation Coefficient": 1.968667798677849e-08,
+            "Bit Error Rate": 0.005477719995921281,
+            "Mean Squared Error": 3.6003283369022125,
+            "Entropy": 7.621448320611621,
+            "Average Pixel Error": 27.302190272254514,
+            "LPIPS Loss": 0.023041168227791786
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "NoiseAdditionAttacker 0.1",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "CloneStampAttacker",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 28.164582245680926,
+            "Normalized Correlation Coefficient": 5.995813927243008e-08,
+            "Bit Error Rate": 0.1677250943203834,
+            "Mean Squared Error": 99.22523503619864,
+            "Entropy": 7.261219374965864,
+            "Average Pixel Error": 41.63059447333537,
+            "LPIPS Loss": 0.2478499859571457
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "OverlayAttacker",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 43.16566675057092,
+            "Normalized Correlation Coefficient": 9.607096376736072e-09,
+            "Bit Error Rate": 0.004280615886611604,
+            "Mean Squared Error": 3.136993983889059,
+            "Entropy": 7.629865375338215,
+            "Average Pixel Error": 42.519549301519326,
+            "LPIPS Loss": 0.022111762315034866
+        },
+        "attacked_analysis_results": {
+            "PSNR": 28.115470932380603,
+            "Normalized Correlation Coefficient": 3.9318349406832264e-08,
+            "Bit Error Rate": 0.22520852452329967,
+            "Mean Squared Error": 100.35367186703375,
+            "Entropy": 6.486321716774218,
+            "Average Pixel Error": 100.20970123381258,
+            "LPIPS Loss": 0.6171711683273315
+        },
+        "watermark_method": "DwtDctWatermarker",
+        "attack_method": "WarpingAttacker",
+        "encoding_time": 0.01995062828063965,
+        "decoding_time": 0.011306524276733398
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 36.2969719363257,
+            "Normalized Correlation Coefficient": 3.427799873135607e-08,
+            "Bit Error Rate": 0.013210971754868971,
+            "Mean Squared Error": 15.253979810339553,
+            "Entropy": 7.629799564764923,
+            "Average Pixel Error": 96.35489548281839,
+            "LPIPS Loss": 0.1681307852268219
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "BlurAttacker 1",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 34.024590528205295,
+            "Normalized Correlation Coefficient": 3.3202150525391995e-08,
+            "Bit Error Rate": 0.021609054756806363,
+            "Mean Squared Error": 25.74075660242684,
+            "Entropy": 7.623297033074415,
+            "Average Pixel Error": 103.83103905373713,
+            "LPIPS Loss": 0.30005863308906555
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "BlurAttacker 3",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 29.762942446950017,
+            "Normalized Correlation Coefficient": 1.6922015016969338e-08,
+            "Bit Error Rate": 0.052397267258080964,
+            "Mean Squared Error": 68.67301519322933,
+            "Entropy": 6.472554797361851,
+            "Average Pixel Error": 114.6274028754971,
+            "LPIPS Loss": 0.5391949415206909
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "JpegCompressionAttacker 5",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 35.47580664587277,
+            "Normalized Correlation Coefficient": 2.966735966218301e-08,
+            "Bit Error Rate": 0.01569899051697767,
+            "Mean Squared Error": 18.42891200163149,
+            "Entropy": 7.630350062498615,
+            "Average Pixel Error": 102.80600591414296,
+            "LPIPS Loss": 0.08383946865797043
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "JpegCompressionAttacker 50",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 41.69589641952789,
+            "Normalized Correlation Coefficient": 6.091180451665429e-09,
+            "Bit Error Rate": 0.004513102885693892,
+            "Mean Squared Error": 4.400385438972163,
+            "Entropy": 7.625565363851554,
+            "Average Pixel Error": 53.585237075558275,
+            "LPIPS Loss": 0.029671192169189453
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "JpegCompressionAttacker 75",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 39.84502864287735,
+            "Normalized Correlation Coefficient": 1.3611580325856592e-08,
+            "Bit Error Rate": 0.007345773427143877,
+            "Mean Squared Error": 6.738721321505047,
+            "Entropy": 7.616836569401538,
+            "Average Pixel Error": 46.948869175079025,
+            "LPIPS Loss": 0.03883788734674454
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "NoiseAdditionAttacker 0.1",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "CloneStampAttacker",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 28.137936107744636,
+            "Normalized Correlation Coefficient": 2.6981640112028625e-08,
+            "Bit Error Rate": 0.16713979810339552,
+            "Mean Squared Error": 99.83590292648108,
+            "Entropy": 7.255041528648097,
+            "Average Pixel Error": 41.78786377077598,
+            "LPIPS Loss": 0.257954865694046
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "OverlayAttacker",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.34599613953988,
+            "Normalized Correlation Coefficient": 4.7544423247700476e-08,
+            "Bit Error Rate": 0.006377077597634343,
+            "Mean Squared Error": 6.004553890078515,
+            "Entropy": 7.625488691407199,
+            "Average Pixel Error": 64.41922096461711,
+            "LPIPS Loss": 0.038739752024412155
+        },
+        "attacked_analysis_results": {
+            "PSNR": 28.118478948343654,
+            "Normalized Correlation Coefficient": 3.856226773173444e-08,
+            "Bit Error Rate": 0.22482920363006015,
+            "Mean Squared Error": 100.28418884470277,
+            "Entropy": 6.486253556124331,
+            "Average Pixel Error": 99.84887529315795,
+            "LPIPS Loss": 0.6261216402053833
+        },
+        "watermark_method": "DwtDctSvdWatermarker",
+        "attack_method": "WarpingAttacker",
+        "encoding_time": 0.08348965644836426,
+        "decoding_time": 0.04840254783630371
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": {
+            "PSNR": 36.18289168716366,
+            "Normalized Correlation Coefficient": 4.44337404900484e-08,
+            "Bit Error Rate": 0.014157234628326706,
+            "Mean Squared Error": 15.659979606403589,
+            "Entropy": 7.6375105219591015,
+            "Average Pixel Error": 107.69716529009891,
+            "LPIPS Loss": 0.20141208171844482
+        },
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "BlurAttacker 1",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": {
+            "PSNR": 34.0303855685442,
+            "Normalized Correlation Coefficient": 4.220045912278876e-08,
+            "Bit Error Rate": 0.021910879983685124,
+            "Mean Squared Error": 25.706432140307943,
+            "Entropy": 7.634372015371805,
+            "Average Pixel Error": 106.20153155909044,
+            "LPIPS Loss": 0.3214949071407318
+        },
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "BlurAttacker 3",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "JpegCompressionAttacker 5",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": {
+            "PSNR": 35.81298139301894,
+            "Normalized Correlation Coefficient": 3.798632598288451e-08,
+            "Bit Error Rate": 0.015354338737636383,
+            "Mean Squared Error": 17.052270826960335,
+            "Entropy": 7.633755529790497,
+            "Average Pixel Error": 98.97534618129907,
+            "LPIPS Loss": 0.07989417761564255
+        },
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "JpegCompressionAttacker 50",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": {
+            "PSNR": 41.973279707842465,
+            "Normalized Correlation Coefficient": 4.157248215339033e-08,
+            "Bit Error Rate": 0.00649536045681656,
+            "Mean Squared Error": 4.128120730090751,
+            "Entropy": 7.636910628222818,
+            "Average Pixel Error": 75.97403895176915,
+            "LPIPS Loss": 0.03566565737128258
+        },
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "JpegCompressionAttacker 75",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": {
+            "PSNR": 39.851253771924846,
+            "Normalized Correlation Coefficient": 3.440985842173105e-08,
+            "Bit Error Rate": 0.009576832874477414,
+            "Mean Squared Error": 6.72906903232385,
+            "Entropy": 7.6263680294900285,
+            "Average Pixel Error": 116.28271438768226,
+            "LPIPS Loss": 0.06320177018642426
+        },
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "NoiseAdditionAttacker 0.1",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "CloneStampAttacker",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": [],
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "OverlayAttacker",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    },
+    {
+        "filepath": "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark/pexels-photo-210234.jpeg",
+        "watermarked_analysis_results": {
+            "PSNR": 40.52721694337224,
+            "Normalized Correlation Coefficient": 1.2407881893930454e-08,
+            "Bit Error Rate": 0.009574793514836342,
+            "Mean Squared Error": 5.759153665748955,
+            "Entropy": 7.6284964503365975,
+            "Average Pixel Error": 122.84983991026817,
+            "LPIPS Loss": 0.06296757608652115
+        },
+        "attacked_analysis_results": {
+            "PSNR": 28.118325720572873,
+            "Normalized Correlation Coefficient": 1.74573890950224e-08,
+            "Bit Error Rate": 0.22434179667584378,
+            "Mean Squared Error": 100.28772713368002,
+            "Entropy": 6.494992865912491,
+            "Average Pixel Error": 100.24899969409606,
+            "LPIPS Loss": 0.6332084536552429
+        },
+        "watermark_method": "RivaGanWatermarker",
+        "attack_method": "WarpingAttacker",
+        "encoding_time": 0.32764554023742676,
+        "decoding_time": 0.39043426513671875
+    }
+]

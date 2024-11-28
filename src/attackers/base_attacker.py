@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from src.attacker import Attacker, AttackingResults
 from src.dto import Dto
+from src.utils import log
 
 
 class BlurAttacker(Attacker):
@@ -27,7 +28,7 @@ class JpegCompressionAttacker(Attacker):
         self.quality = quality
 
     def attack(self, dto: Dto) -> AttackingResults:
-        print("Applying JPEG Compression Attack...")
+        log("Applying JPEG Compression Attack...")
         encode_param = [
             int(cv2.IMWRITE_JPEG_QUALITY),
             self.quality,
@@ -46,7 +47,7 @@ class NoiseAdditionAttacker(Attacker):
         self.intesity = intesity
 
     def attack(self, dto: Dto) -> AttackingResults:
-        print("Applying Noise Addition Attack...")
+        log("Applying Noise Addition Attack...")
         noise = np.random.normal(0, self.intesity, dto.watermarked_image.shape).astype(
             np.float32
         )
@@ -62,7 +63,7 @@ class NoiseAdditionAttacker(Attacker):
 #         super().__init__()
 
 #     def attack(self, dto: Dto) -> AttackingResults:
-#         print("Applying Crop Attack...")
+#         log("Applying Crop Attack...")
 #         h, w, _ = dto.watermarked_image.shape
 #         cropped_image = dto.watermarked_image[h // 4 : 3 * h // 4, w // 4 : 3 * w // 4]
 #         return cv2.resize(cropped_image, (w, h))  # Skalowanie do pierwotnego rozmiaru
@@ -73,7 +74,7 @@ class NoiseAdditionAttacker(Attacker):
 #         super().__init__()
 
 #     def attack(self, dto: Dto) -> AttackingResults:
-#         print("Applying Scaling Attack...")
+#         log("Applying Scaling Attack...")
 #         h, w, _ = dto.watermarked_image.shape
 #         scaled_image = cv2.resize(dto.watermarked_image, (w // 2, h // 2))  # Skalowanie w dół
 #         return cv2.resize(scaled_image, (w, h))  # Przywrócenie rozmiaru
@@ -84,7 +85,7 @@ class CloneStampAttacker(Attacker):
         super().__init__()
 
     def attack(self, dto: Dto) -> AttackingResults:
-        print("Applying Clone Stamp Attack...")
+        log("Applying Clone Stamp Attack...")
         clone_image = dto.watermarked_image.copy()
         h, w, _ = dto.watermarked_image.shape
         x, y = w // 4, h // 4
@@ -111,7 +112,7 @@ class WarpingAttacker(Attacker):
 #         super().__init__()
 
 #     def attack(self, dto: Dto) -> AttackingResults:
-#         print("Applying Labeled Sample Attack...")
+#         log("Applying Labeled Sample Attack...")
 #         # Załóżmy, że mamy dostęp do oznaczonych obrazów w dto.labeled_samples
 #         sample = np.random.choice(dto.labeled_samples)  # Losowy wybór obrazu
 #         overlayed_image = cv2.addWeighted(dto.watermarked_image, 0.5, sample, 0.5, 0)
@@ -123,7 +124,7 @@ class OverlayAttacker(Attacker):
         super().__init__()
 
     def attack(self, dto: Dto) -> AttackingResults:
-        print("Applying Overlay Attack...")
+        log("Applying Overlay Attack...")
         overlay = np.zeros_like(dto.watermarked_image)
         h, w, _ = dto.watermarked_image.shape
         cv2.rectangle(

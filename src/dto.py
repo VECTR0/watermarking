@@ -29,8 +29,8 @@ class Dto:
         self.attacked_analysis_results: list[AnalysisResults] = []
 
     def load_image(self) -> ImageType:
-        # return cv2.imread(self.filepath)
-        return generate_dummy_image()
+        return cv2.imread(self.filepath)
+        # return generate_dummy_image()
 
     def copy(self) -> "Dto":
         return copy.deepcopy(self)

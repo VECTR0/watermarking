@@ -11,3 +11,4 @@ pytest
 mypy
 torch
 torchvision
+onnxruntime
