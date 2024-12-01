@@ -1,7 +1,8 @@
+import concurrent
 import os
 
-from src.attacker import Attacker
-from src.attackers.base_attacker import (
+from src.attacker import (
+    Attacker,
     BlurAttacker,
     CloneStampAttacker,
     JpegCompressionAttacker,
@@ -9,41 +10,16 @@ from src.attackers.base_attacker import (
     OverlayAttacker,
     WarpingAttacker,
 )
-from src.attackers.basic_attacker import BasicAttacker
+from src.config import Logger, config, logger
 from src.dto import Dto
 from src.dto_saver import DtoSaver
 from src.metric import ImageMetrics
-from src.utils import log
 from src.watermarker import Watermarker
-from src.watermarkers.basic_watermarker import BasicWatermarker
 from src.watermarkers.dwt_dct_svd_watermarker import DwtDctSvdWatermarker
 from src.watermarkers.dwt_dct_watermarker import DwtDctWatermarker
 from src.watermarkers.fft_watermarker import FFTWatermarker
 from src.watermarkers.lsb_watermarker import LSBWatermarker
 from src.watermarkers.riva_gan_watermarker import RivaGanWatermarker
-
-# Watermarkers
-# BasicWatermarker()
-# simple
-LSBWatermarker()
-FFTWatermarker()
-# more complex
-DwtDctWatermarker()
-DwtDctSvdWatermarker()
-# TODO only 32 bit watermarks supported
-RivaGanWatermarker()
-
-# Attackers
-# BasicAttacker()
-BlurAttacker(kernel_size=1)
-BlurAttacker(kernel_size=3)
-JpegCompressionAttacker(quality=5)
-JpegCompressionAttacker(quality=50)
-JpegCompressionAttacker(quality=75)
-NoiseAdditionAttacker(intesity=0.1)
-CloneStampAttacker()
-OverlayAttacker()
-WarpingAttacker()
 
 
 def get_image_paths(
@@ -59,38 +35,28 @@ def get_image_paths(
     Returns:
         list: List of image file paths.
     """
-    image_paths = []
 
-    # Normalize the folder path and iterate through files in the directory
-
-    for file in os.listdir(folder_path):
-        if file.lower().endswith(extensions):
-            image_paths.append(os.path.join(folder_path, file))
-
-    return image_paths
+    return [
+        os.path.join(folder_path, fp)
+        for fp in os.listdir(folder_path)
+        if fp.lower().endswith(extensions)
+    ]
 
 
-# TODO make proper dataset loading
-# dataset = ["image1.png"]
-dataset = get_image_paths(
-    # "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/watermark"
-    "/home/adam/.cache/kagglehub/datasets/felicepollano/watermarked-not-watermarked-images/versions/1/wm-nowm/train/no-watermark"
-)
-
-dto_saver = DtoSaver()
-
-for i, filepath in enumerate(dataset):
+def process_image(
+    filepath: str, dto_saver: "DtoSaver", img_metric: ImageMetrics
+) -> None:
     src_dto = Dto(filepath)
     src_dto.watermark = (
-        "test"  # TODO FIXME 4chars hardcoded (32bits) to ensure rivaGan works
+        config.default_watermark
+        # TODO: FIXME 4chars hardcoded (32bits) to ensure rivaGan works
+        # Maybe move to global scope, because it sholud not change?
     )
-    log(f"Processing {filepath}... type: {type(src_dto.source_image)}")
 
     for watermark in Watermarker.get_all():
         watermark_name = watermark.get_name()
-        dto = (
-            src_dto.copy()
-        )  # TODO maybe reduce cloning source image and use reference from src_dto
+        dto = src_dto.copy()
+
         # encode
         dto.watermark_method = watermark_name
         encoded_image, encoding_time = watermark.encode(dto)
@@ -103,38 +69,108 @@ for i, filepath in enumerate(dataset):
             )
             dto.decoded_watermark = decoded_watermarked_str
             dto.decoding_time = decoding_watermarked_time
-        except:
-            log("decoded failed :-()")
 
+        except Exception as e:
+            logger.log(
+                f"""Decoded watermark failed for path: {dto.filepath},
+                with method {watermark_name}.
+                Error: {e!s}""",
+                level=Logger.ERROR,
+            )
         # metric
-        dto.watermarked_analysis_results = ImageMetrics.get_all(
+        dto.watermarked_analysis_results = img_metric.get_all(
             dto.source_image, dto.watermarked_image
         )
-
         for attacker in Attacker.get_all():
             attack_name = attacker.get_name()
             attacked_dto = dto.copy()
+
             # attack
             attacked_dto.attack_method = attack_name
             try:
                 attacked_image = attacker.attack(dto)
                 attacked_dto.attacked_image = attacked_image
-                # decode
-                decoded_attacked_str, decoding_attacked_time = (
-                    watermark.decode(  # TODO use and save returned values
-                        attacked_dto.attacked_image
-                    )
-                )
-                # metric
-                attacked_dto.attacked_analysis_results = ImageMetrics.get_all(
+                # # decode
+                # decoded_attacked_str, decoding_attacked_time = watermark.decode(
+                #     attacked_dto.attacked_image
+                # )
+                attacked_dto.attacked_analysis_results = img_metric.get_all(
                     attacked_dto.source_image, attacked_dto.attacked_image
                 )
-            except:
-                # handle attack errror and decode error
-                log("decoded attack failed :-()")
-
+            except Exception as e:
+                logger.log(
+                    f"""Decoded attack failed for path: {dto.filepath},
+                    with attack method {attack_name}.
+                    Error: {e!s}""",
+                    level=Logger.ERROR,
+                )
             dto_saver.add(attacked_dto)
-            # TODO: maybe modify saver class to decrease dto object metric info duplication
 
-    if (i > 0 and i % 10 == 0) or i == len(dataset) - 1:
-        dto_saver.save_to_file(f"output_no_watermark{i}.json", clear_current_list=True)
+
+def split_dataset(
+    dataset: list[str], num_chunks: int, *, trim_to: int | None = None
+) -> list[list[str]]:
+    dataset_len = (
+        trim_to if trim_to is not None and trim_to < len(dataset) else len(dataset)
+    )
+    if dataset_len < num_chunks:
+        msg = f"The dataset length: {dataset_len} is smaller than the number of chunks (cores): {num_chunks}."
+        raise ValueError(msg)
+    dataset = dataset[:dataset_len]
+    chunk_size = dataset_len // num_chunks
+    return [dataset[i : i + chunk_size] for i in range(0, dataset_len, chunk_size)]
+
+
+def process_chunk(
+    n_core: int,
+    image_paths: list[str],
+) -> None:
+    dto_saver = DtoSaver()
+    img_metric = ImageMetrics()
+
+    for fp in image_paths:
+        process_image(fp, dto_saver, img_metric)
+    dto_saver.save_to_file(
+        os.path.join(config.output_path, f"output_no_watermark_core={n_core}.json"),
+        clear_current_list=True,
+    )
+
+
+def main() -> None:
+    # Watermarkers
+    # TODO: fix lsb, fft
+    # LSBWatermarker()
+    # FFTWatermarker()
+    DwtDctWatermarker()
+    DwtDctSvdWatermarker()
+    RivaGanWatermarker()
+
+    # Attackers
+    BlurAttacker(kernel_size=1)
+    # BlurAttacker(kernel_size=3)
+    # JpegCompressionAttacker(quality=5)
+    # JpegCompressionAttacker(quality=50)
+    # JpegCompressionAttacker(quality=75)
+    # NoiseAdditionAttacker(intesity=0.1)
+    # CloneStampAttacker()
+    # OverlayAttacker()
+    # WarpingAttacker()
+
+    # TODO: from .env
+    dataset = get_image_paths(config.dataset_path)
+
+    dataset_chunks = split_dataset(dataset, config.cores, trim_to=12)
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        try:
+            futures = [
+                executor.submit(process_chunk, i, chunk)
+                for i, chunk in enumerate(dataset_chunks)
+            ]
+        except Exception as e:
+            logger.log(f"Process failed: {e}", level=Logger.ERROR)
+
+        concurrent.futures.wait(futures)
+
+
+if __name__ == "__main__":
+    main()

@@ -14,3 +14,5 @@ torchvision
 onnxruntime
 ftfy
 regex
+pydantic
+pydantic-settings

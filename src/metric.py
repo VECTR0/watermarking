@@ -1,21 +1,15 @@
 from enum import Enum
+
 import lpips
 import numpy as np
 import torch
-import torchvision.transforms as transforms
-from scipy import stats
-from skimage import img_as_float
+from pydantic import BaseModel
 from skimage.measure import shannon_entropy
 from skimage.metrics import structural_similarity as ssim
+from torchvision import transforms
 
-from src.dto import ImageType
-
-device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
-
-model = torch.hub.load(  # TODO fix ftfy
-    repo_or_dir="miccunifi/QualiCLIP", source="github", model="QualiCLIP"
-)
-model.eval().to(device)
+from src.config import Logger, config, logger
+from src.types import ImageType
 
 
 class LPIPSModel(Enum):
@@ -34,68 +28,64 @@ class LPIPSModel(Enum):
             case LPIPSModel.VGG:
                 return lpips.LPIPS(net="vgg").to(device)
             case _:
-                raise ValueError("Invalid LPIPS model selected")
+                msg = "Invalid LPIPS model selected"
+                raise ValueError(msg)
+
+
+class ImageMetricsModel(BaseModel):
+    PSNR: float
+    SSIM: float
+    Correlation_Coefficient: float
+    Normalized_Correlation_Coefficient: float
+    Bit_Error_Rate: float
+    Mean_Squared_Error: float
+    Entropy: float
+    Average_Pixel_Error: float
+    QualiCLIP_original: float
+    QualiCLIP_watermarked: float
+    LPIPS_Loss: float
 
 
 class ImageMetrics:
-    def __init__(
-        self,
-        original: ImageType,
-        watermarked: ImageType,
-        device: str = "cpu",
-        model: LPIPSModel = LPIPSModel.ALEX,
-    ) -> None:
-        """
-        Initialize the ImageMetrics object with original and watermarked images.
-        :param original: The original image (numpy array).
-        :param watermarked: The watermarked image (numpy array).
-        :param device: The device to run LPIPS on ('cpu' or 'cuda').
-        :param model: The LPIPS model to use ('alex' or 'vgg').
-        """
-        self.original = original
-        self.watermarked = watermarked
-        self.device = device
-        self.model = model
+    def __init__(self) -> None:
+        try:
+            model_quali = torch.hub.load(
+                repo_or_dir="miccunifi/QualiCLIP", source="github", model="QualiCLIP"
+            )
+            self.model_quali = model_quali.eval().to(config.device)
+            self.lpips_loss_fn = LPIPSModel.ALEX.get_lpips_model(config.device)
+        except Exception as e:
+            # TODO: FIXME: Handle CUDA multi-processing (spawn instead of fork)
+            logger.log(f"Cannot initialize models: {e}", level=Logger.ERROR)
 
-        self.loss_fn = self.model.get_lpips_model()
-
-    @staticmethod
-    def get_all(
-        source_image: ImageType, watermarked_img: ImageType
-    ) -> dict[str, float]:
+    def get_all(self, original: ImageType, watermarked: ImageType) -> ImageMetricsModel:
         """
         Calculate all metrics and return them as a dictionary.
 
         :return: Dictionary where keys are metric names and values are calculated metric values.
         """
         assert (
-            source_image.shape == watermarked_img.shape
+            original.shape == watermarked.shape
         ), "Images must have the same dimensions."
-        metric = ImageMetrics(source_image, watermarked_img)
-        metrics = {
-            "PSNR": float(metric.psnr()),
-            # "SSIM": metric.ssim(),
-            # "Correlation Coefficient": metric.correlation_coefficient(),
-            "Normalized Correlation Coefficient": float(
-                metric.normalized_correlation_coefficient()
+        self.original = original
+        self.watermarked = watermarked
+
+        # TODO: remove unnecessary float casting
+        return ImageMetricsModel(
+            PSNR=float(self.__psnr()),
+            SSIM=float(self.__ssim()),
+            Correlation_Coefficient=float(self.__correlation_coefficient()),
+            Normalized_Correlation_Coefficient=float(
+                self.__normalized_correlation_coefficient()
             ),
-            "Bit Error Rate": float(metric.bit_error_rate()),
-            "Mean Squared Error": float(metric.mean_squared_error()),
-            "Entropy": float(metric.entropy()),
-            "Average Pixel Error": float(metric.average_pixel_error()),
-            "QualiCLIP_original": float(metric.quali_clip(original=True)),
-            "QualiCLIP_watermarked": float(metric.quali_clip(original=False)),
-        }
-
-        # LPIPS loss is optional (requires PyTorch and the appropriate model)
-        try:
-            metrics["LPIPS Loss"] = metric.lpips_loss()
-        except Exception as e:
-            metrics["LPIPS Loss"] = float(
-                "nan"
-            )  # Handle cases where LPIPS calculation fails
-
-        return metrics
+            Bit_Error_Rate=float(self.__bit_error_rate()),
+            Mean_Squared_Error=float(self.__mean_squared_error()),
+            Entropy=float(self.__entropy()),
+            Average_Pixel_Error=float(self.__average_pixel_error()),
+            QualiCLIP_original=float(self.__quali_clip(original=True)),
+            QualiCLIP_watermarked=float(self.__quali_clip(original=False)),
+            LPIPS_Loss=self.__lpips_loss(),
+        )
 
     def _to_tensor(self, img: ImageType) -> torch.Tensor:
         """
@@ -106,7 +96,7 @@ class ImageMetrics:
         img = (img - 0.5) * 2.0  # Normalize to [-1, 1]
         return img.unsqueeze(0)  # Add batch dimension
 
-    def psnr(self) -> float:
+    def __psnr(self) -> float:
         """
         Calculate the Peak Signal-to-Noise Ratio (PSNR).
         """
@@ -116,7 +106,9 @@ class ImageMetrics:
         max_pixel = 255.0
         return 20 * np.log10(max_pixel / np.sqrt(mse))
 
-    def ssim(self, win_size: int = 7) -> float:
+    def __ssim(self, win_size: int = 7) -> float:
+        # TODO: fix function
+        return float("nan")
         """
         Calculate the Structural Similarity Index (SSIM) between the original and watermarked images.
 
@@ -139,7 +131,9 @@ class ImageMetrics:
             self.original, self.watermarked, multichannel=True, win_size=win_size
         )
 
-    def correlation_coefficient(self) -> float:
+    def __correlation_coefficient(self) -> float:
+        # TODO: fix function
+        return float("nan")
         """
         Calculate the Pearson Correlation Coefficient (SCC).
         """
@@ -147,7 +141,7 @@ class ImageMetrics:
         watermarked_flat = self.watermarked.flatten()
         return np.corrcoef(original_flat, watermarked_flat)[0, 1]
 
-    def normalized_correlation_coefficient(self) -> float:
+    def __normalized_correlation_coefficient(self) -> float:
         """
         Calculate the Normalized Correlation Coefficient (NCC).
         """
@@ -157,56 +151,60 @@ class ImageMetrics:
             np.linalg.norm(original_flat) * np.linalg.norm(watermarked_flat)
         )
 
-    def bit_error_rate(self) -> float:
+    def __bit_error_rate(self) -> float:
         """
         Calculate the Bit Error Rate (BER).
         Assumes binary watermarking (0 or 1).
         """
-        Q = 127
-        original_binary = (self.original > Q).astype(int)
-        watermarked_binary = (self.watermarked > Q).astype(int)
+        q = 127
+        original_binary = (self.original > q).astype(int)
+        watermarked_binary = (self.watermarked > q).astype(int)
         num_bit_errors = np.sum(original_binary != watermarked_binary)
         total_bits = original_binary.size
         return num_bit_errors / total_bits
 
-    def mean_squared_error(self) -> float:
+    def __mean_squared_error(self) -> float:
         """
         Calculate the Mean Squared Error (MSE).
         """
         return np.mean((self.original - self.watermarked) ** 2)
 
-    def entropy(self) -> float:
+    def __entropy(self) -> float:
         """
         Calculate the Shannon Entropy of the image.
         A higher entropy value means more randomness.
         """
         return shannon_entropy(self.watermarked)
 
-    def average_pixel_error(self) -> float:
+    def __average_pixel_error(self) -> float:
         """
         Calculate the Average Pixel Error.
         """
         return np.mean(np.abs(self.original - self.watermarked))
 
-    def image_difference(self) -> ImageType:
+    def __image_difference(self) -> ImageType:
         """
         Calculate the absolute difference between the original and watermarked image.
         """
         return np.abs(self.original - self.watermarked)
 
-    def lpips_loss(self) -> float:
+    def __lpips_loss(self) -> float:
         """
         Calculate the LPIPS loss between the original and watermarked images.
         """
-        # Convert images to torch tensors and normalize to [-1, 1] for LPIPS
-        original_tensor = self._to_tensor(self.original)
-        watermarked_tensor = self._to_tensor(self.watermarked)
+        try:
+            # Convert images to tensors
+            original_tensor = self._to_tensor(self.original)
+            watermarked_tensor = self._to_tensor(self.watermarked)
 
-        # Calculate the LPIPS loss
-        loss = self.loss_fn(original_tensor, watermarked_tensor)
-        return loss.item()
+            # Calculate the LPIPS loss
+            loss = self.lpips_loss_fn(original_tensor, watermarked_tensor)
+            return loss.item()
 
-    def quali_clip(self, *, original: bool = True) -> float:
+        except Exception:
+            return float("nan")
+
+    def __quali_clip(self, *, original: bool = True) -> float:
         preprocess = transforms.Compose(
             [
                 transforms.ToTensor(),
@@ -217,14 +215,14 @@ class ImageMetrics:
             ]
         )
         img_ = self.original if original else self.watermarked
-        img = preprocess(img_).unsqueeze(0).to(device)
+        img = preprocess(img_).unsqueeze(0).to(config.device)
 
         with torch.no_grad(), torch.cuda.amp.autocast():
-            score = model(img).item()
-        return score
+            return self.model_quali(img).item()
 
     def __repr__(self) -> str:
-        return f"ImageMetrics(original_shape={self.original.shape}, watermarked_shape={self.watermarked.shape}, model={self.model.name})"
-
-
-# TODO: add RMSE, CLIP - IQA
+        return f"""ImageMetrics(
+        original_shape={self.original.shape},
+        watermarked_shape={self.watermarked.shape},
+        model_quali={self.model_quali.name}
+    )"""
