@@ -1,36 +1,39 @@
 import copy
 
 import cv2
-import numpy as np
+from pydantic import BaseModel
 
-from src.utils import generate_dummy_image
+from src.metric import ImageMetricsModel
+from src.types import AttackingAnalysisResults, ImageType
 
-AnalysisResults = dict[str, float | str]
-ImageType = np.ndarray
+
+class DtoLog(BaseModel):
+    filepath: str
+    watermarked_analysis_results: ImageMetricsModel
+    watermark_method: str
+    attack_method: str
+    encoding_time: float
+    decoding_time: float
 
 
 class Dto:
+    # TODO: The use of Optional None is somewhat inconvenient. Maybe enforce non-None?
+
     def __init__(self, filepath: str) -> None:
-        # TODO: Optional None troche niewygodny - może wymusić w niektórych metodach aby nie był None?
         self.filepath = filepath
         self.source_image: ImageType = self.load_image()
 
-        self.watermark_method: str | None = None
         self.watermarked_image: ImageType | None = None
         self.watermark: str | None = None
-        self.encoding_time: float | None = None
+        self.watermarked_analysis_results: ImageMetricsModel | None = None
 
         self.decoded_watermark: str | None = None
-        self.decoding_time: float | None = None
-        self.watermarked_analysis_results: list[AnalysisResults] = []
 
-        self.attack_method: str | None = None
         self.attacked_image: ImageType | None = None
-        self.attacked_analysis_results: list[AnalysisResults] = []
+        self.attacked_analysis_results: list[AttackingAnalysisResults] | None = None
 
     def load_image(self) -> ImageType:
         return cv2.imread(self.filepath)
-        # return generate_dummy_image()
 
     def copy(self) -> "Dto":
         return copy.deepcopy(self)

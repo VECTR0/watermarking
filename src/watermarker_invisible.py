@@ -3,6 +3,8 @@ from enum import Enum
 import numpy as np
 from imwatermark import WatermarkDecoder, WatermarkEncoder
 
+from src.config import Logger, logger
+
 # for RivaGAN
 WatermarkEncoder.loadModel()
 
@@ -36,8 +38,9 @@ class WatermarkInvisibleMethod(Enum):
             # Encode watermark using the method's value
             return encoder.encode(image, self.value)
         except Exception as e:
-            raise RuntimeError(
-                f"Error encoding watermark with method '{self.name}': {e}"
+            logger.log(
+                f"Error encoding watermark with method '{self.name}': {e}",
+                level=Logger.ERROR,
             )
 
     def decode(self, image: np.ndarray) -> str | None:
@@ -58,13 +61,17 @@ class WatermarkInvisibleMethod(Enum):
             # Decode watermark using the method's value
             watermark = decoder.decode(image, self.value)
         except Exception as e:
-            msg = f"Error decoding watermark with method '{self.name}': {e}"
-            raise RuntimeError(msg)
+            logger.log(
+                f"Error decoding watermark with method '{self.name}': {e}",
+                level=Logger.ERROR,
+            )
 
         if watermark:
             try:
                 return watermark.decode("utf-8")
             except UnicodeDecodeError:
-                msg = "Decoded watermark could not be converted to UTF-8."
-                raise ValueError(msg)
+                logger.log(
+                    "Decoded watermark could not be converted to UTF-8.",
+                    level=Logger.ERROR,
+                )
         return None

@@ -1,8 +1,8 @@
 import numpy as np
-from src.utils import measure_time
+
 from src.dto import Dto, ImageType
-from src.watermarker import Watermarker, DecodingResults, EncodingResults
-from src.watermarker_invisible import WatermarkInvisibleMethod
+from src.utils import measure_time
+from src.watermarker import DecodingResults, EncodingResults, Watermarker
 
 
 class FFT:
@@ -73,9 +73,7 @@ class FFTWatermarker(Watermarker):
         super().__init__()
 
     def encode(self, dto: Dto) -> EncodingResults:
-        image, watermark = dto.source_image, dto.watermark
-        assert isinstance(image, ImageType), "sorry bro"
-        assert isinstance(watermark, str), ":-()"
+        image, watermark = super().validate_encode_input(dto)
 
         watermarked_image, time_taken = measure_time(FFT.encode)(image, watermark)
 
@@ -89,6 +87,3 @@ class FFTWatermarker(Watermarker):
         decoded, time_taken = measure_time(FFT.decode)(image)
 
         return decoded, time_taken
-
-    def get_name(self) -> str:
-        return self.__class__.__name__

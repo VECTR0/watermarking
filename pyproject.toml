@@ -43,7 +43,10 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["ANN101", "ANN102", "D", "FA102", "FIX001", "TD", "INP001", "COM812", "ISC001", "S101"]
+ignore = [
+    "ANN101", "ANN102", "D", "FA102", "FIX001", "TD", "INP001", "COM812", "ISC001", "S101","PTH118",
+    "FIX002", "ERA001", "E501"
+    ]
 task-tags = ["TODO", "FIXME"]
 
 [tool.ruff.format]

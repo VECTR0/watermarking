@@ -1,6 +1,6 @@
-from src.utils import measure_time
 from src.dto import Dto, ImageType
-from src.watermarker import Watermarker, DecodingResults, EncodingResults
+from src.utils import measure_time
+from src.watermarker import DecodingResults, EncodingResults, Watermarker
 from src.watermarker_invisible import WatermarkInvisibleMethod
 
 
@@ -9,9 +9,7 @@ class DwtDctSvdWatermarker(Watermarker):
         super().__init__()
 
     def encode(self, dto: Dto) -> EncodingResults:
-        image, watermark = dto.source_image, dto.watermark
-        assert isinstance(image, ImageType), "sorry bro"
-        assert isinstance(watermark, str), ":-()"
+        image, watermark = super().validate_encode_input(dto)
 
         watermarked_image, time_taken = measure_time(
             WatermarkInvisibleMethod.DWT_DCT_SVD.encode
@@ -29,6 +27,3 @@ class DwtDctSvdWatermarker(Watermarker):
         )
 
         return decoded, time_taken
-
-    def get_name(self) -> str:
-        return self.__class__.__name__
