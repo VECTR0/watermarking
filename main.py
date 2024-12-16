@@ -147,11 +147,8 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
     filename = os.path.join(config.output_path, f"{stripped_source_filename}.json")
     try:
         with Path(filename).open("w") as fp:
-            # TODO: FIXME: now is different json format - is it ok?
             serialized_data = dto.model_dump_json()
-            print(serialized_data)
-            print(f"   Saving to: {filename}")
-            # json.dump(serialized_data, fp, indent=4)
+            fp.write(serialized_data)
         logger.log(f"Data saved to {filename}.", level=Logger.INFO)
     except json.JSONDecodeError as e:
         logger.log(f"JSON decoding error: {e}", level=Logger.ERROR)
