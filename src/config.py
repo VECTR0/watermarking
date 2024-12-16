@@ -35,7 +35,7 @@ class Config(BaseSettings):
         Logger.NO.value, description="Log level: NO, DEBUG, INFO, WARN, ERROR"
     )
 
-    device: str = Field("cpu")
+    device: str = Field("cuda" if torch.cuda.is_available() else "cpu")
 
     class Config:
         env_prefix = "APP_"  # Required environment variable prefix in .env
