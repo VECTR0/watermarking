@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.dto import ImageType
+from src.types import ImageType
 from src.utils import measure_time
 from src.watermarker import DecodingResults, EncodingResults, Watermarker
 

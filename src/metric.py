@@ -1,5 +1,6 @@
 from enum import Enum
 
+import cv2
 import lpips
 import numpy as np
 import torch
@@ -9,6 +10,7 @@ from skimage.metrics import structural_similarity as ssim
 from torchvision import transforms
 
 from src.config import Logger, config, logger
+from src.dto import DecodingMetricsModel, ImageMetricsModel
 from src.types import ImageType
 
 
@@ -32,18 +34,61 @@ class LPIPSModel(Enum):
                 raise ValueError(msg)
 
 
-class ImageMetricsModel(BaseModel):
-    PSNR: float
-    SSIM: float
-    Correlation_Coefficient: float
-    Normalized_Correlation_Coefficient: float
-    Bit_Error_Rate: float
-    Mean_Squared_Error: float
-    Entropy: float
-    Average_Pixel_Error: float
-    QualiCLIP_original: float
-    QualiCLIP_watermarked: float
-    LPIPS_Loss: float
+def get_decoding_metrics_model(
+    watermark: bytes, decoded: bytes
+) -> DecodingMetricsModel:
+    return DecodingMetricsModel(
+        Correlation_Coefficient=correlation_coefficient(watermark, decoded),
+        Normalized_Correlation_Coefficient=normalized_correlation_coefficient(
+            watermark, decoded
+        ),
+        Bit_Error_Rate=bit_error_rate(watermark, decoded),
+        Mean_Squared_Error=mean_squared_error(watermark, decoded),
+    )
+
+
+def correlation_coefficient(a: bytes, b: bytes) -> float:
+    """
+    Calculate the Pearson Correlation Coefficient (SCC).
+    """
+    original_flat = np.frombuffer(a, dtype=np.uint8)
+    watermarked_flat = np.frombuffer(b, dtype=np.uint8)
+    correlation_matrix = np.corrcoef(original_flat, watermarked_flat)
+    return correlation_matrix[0, 1]
+
+
+def normalized_correlation_coefficient(a: bytes, b: bytes) -> float:
+    """
+    Calculate the Normalized Correlation Coefficient (NCC).
+    """
+    original_flat = np.frombuffer(a, dtype=np.uint8)
+    watermarked_flat = np.frombuffer(b, dtype=np.uint8)
+    return np.dot(original_flat, watermarked_flat) / (
+        np.linalg.norm(original_flat) * np.linalg.norm(watermarked_flat)
+    )
+
+
+def bit_error_rate(a: bytes, b: bytes) -> float:
+    """
+    Calculate the Bit Error Rate (BER).
+    This function assumes that both `a` and `b` are byte sequences that represent binary data (0 or 1) without any thresholding.
+    """
+    if len(a) != len(b):
+        raise ValueError("Input byte arrays must have the same length.")
+
+    original_binary = np.unpackbits(np.frombuffer(a, dtype=np.uint8))
+    watermarked_binary = np.unpackbits(np.frombuffer(b, dtype=np.uint8))
+
+    num_bit_errors = np.sum(original_binary != watermarked_binary)
+    total_bits = original_binary.size
+
+    return num_bit_errors / total_bits
+
+
+def mean_squared_error(a: bytes, b: bytes) -> float:
+    original_binary = np.unpackbits(np.frombuffer(a, dtype=np.uint8))
+    watermarked_binary = np.unpackbits(np.frombuffer(b, dtype=np.uint8))
+    return np.mean((original_binary - watermarked_binary) ** 2)
 
 
 class ImageMetrics:
@@ -73,21 +118,18 @@ class ImageMetrics:
         # TODO: remove unnecessary float casting
         return ImageMetricsModel(
             PSNR=float(self.__psnr()),
-            SSIM=float(self.__ssim()),
-            Correlation_Coefficient=float(self.__correlation_coefficient()),
-            Normalized_Correlation_Coefficient=float(
-                self.__normalized_correlation_coefficient()
-            ),
+            SSIM_RGB=float(self.__ssim_per_channel()),
+            SSIM_Greyscale=float(self.__ssim_greyscale()),
             Bit_Error_Rate=float(self.__bit_error_rate()),
             Mean_Squared_Error=float(self.__mean_squared_error()),
             Entropy=float(self.__entropy()),
             Average_Pixel_Error=float(self.__average_pixel_error()),
-            QualiCLIP_original=float("nan"),  # TODO fix ML models performance
-            # QualiCLIP_original=float(self.__quali_clip(original=True)),
-            QualiCLIP_watermarked=float("nan"),
-            # QualiCLIP_watermarked=float(self.__quali_clip(original=False)),
-            LPIPS_Loss=float("nan"),
-            # LPIPS_Loss=self.__lpips_loss(),
+            # QualiCLIP_original=float("nan"),  # TODO fix ML models performance
+            QualiCLIP_original=float(self.__quali_clip(original=True)),
+            # QualiCLIP_watermarked=float("nan"),
+            QualiCLIP_watermarked=float(self.__quali_clip(original=False)),
+            # LPIPS_Loss=float("nan"),
+            LPIPS_Loss=self.__lpips_loss(),
         )
 
     def _to_tensor(self, img: ImageType) -> torch.Tensor:
@@ -109,50 +151,21 @@ class ImageMetrics:
         max_pixel = 255.0
         return 20 * np.log10(max_pixel / np.sqrt(mse))
 
-    def __ssim(self, win_size: int = 7) -> float:
-        # TODO: fix function
-        return float("nan")
-        """
-        Calculate the Structural Similarity Index (SSIM) between the original and watermarked images.
+    def __ssim_per_channel(self) -> float:
+        """for watermark robustness"""
+        r = ssim(self.original[..., 0], self.watermarked[..., 0], data_range=255)
+        g = ssim(self.original[..., 1], self.watermarked[..., 1], data_range=255)
+        b = ssim(self.original[..., 2], self.watermarked[..., 2], data_range=255)
+        return (r + g + b) / 3
 
-        :param win_size: The window size used for SSIM computation (must be odd and <= image dimensions).
-        :return: SSIM score (range: -1 to 1), where 1 indicates perfect similarity.
+    def __ssim_greyscale(self) -> float:
         """
-        # Ensure images are in the correct range [0, 255] for SSIM
-        if self.original.max() <= 1:
-            self.original = (self.original * 255).astype(np.uint8)
-        if self.watermarked.max() <= 1:
-            self.watermarked = (self.watermarked * 255).astype(np.uint8)
+        for watermark invisibility
+        """
+        gray1 = cv2.cvtColor(self.original, cv2.COLOR_RGB2GRAY)
+        gray2 = cv2.cvtColor(self.watermarked, cv2.COLOR_RGB2GRAY)
 
-        # Ensure images are large enough to accommodate the window size
-        if min(self.original.shape[:2]) < win_size:
-            msg = f"Image dimensions are too small for the specified win_size ({win_size})."
-            raise ValueError(msg)
-
-        # Calculate and return SSIM with specified window size
-        return ssim(
-            self.original, self.watermarked, multichannel=True, win_size=win_size
-        )
-
-    def __correlation_coefficient(self) -> float:
-        # TODO: fix function
-        return float("nan")
-        """
-        Calculate the Pearson Correlation Coefficient (SCC).
-        """
-        original_flat = self.original.flatten()
-        watermarked_flat = self.watermarked.flatten()
-        return np.corrcoef(original_flat, watermarked_flat)[0, 1]
-
-    def __normalized_correlation_coefficient(self) -> float:
-        """
-        Calculate the Normalized Correlation Coefficient (NCC).
-        """
-        original_flat = self.original.flatten()
-        watermarked_flat = self.watermarked.flatten()
-        return np.dot(original_flat, watermarked_flat) / (
-            np.linalg.norm(original_flat) * np.linalg.norm(watermarked_flat)
-        )
+        return ssim(gray1, gray2, data_range=255)
 
     def __bit_error_rate(self) -> float:
         """

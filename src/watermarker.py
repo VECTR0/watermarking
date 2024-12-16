@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import ClassVar
 
-from src.dto import Dto, ImageType
+from src.types import ImageType
 
 EncodingResults = tuple[ImageType, float]
 DecodingResults = tuple[str | None, float]

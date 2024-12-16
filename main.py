@@ -15,7 +15,7 @@ from src.attacker import (
 )
 from src.config import Logger, config, logger
 from src.dto import Dto, DtoAttack, DtoDecode, DtoWatermark
-from src.metric import ImageMetrics
+from src.metric import ImageMetrics, get_decoding_metrics_model
 from src.watermarker import Watermarker
 from src.watermarkers.dwt_dct_svd_watermarker import DwtDctSvdWatermarker
 from src.watermarkers.dwt_dct_watermarker import DwtDctWatermarker
@@ -64,6 +64,9 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
             decoded_watermarked, decoding_watermarked_time = watermark.decode(
                 encoded_image
             )
+            decoding_watermarked_analysis_results = get_decoding_metrics_model(
+                watermark=decoded_watermarked.encode(), decoded=dto.watermark.encode()
+            )
         except Exception as e:
             logger.log(
                 f"""Decoded watermark failed for path: {filepath},
@@ -74,7 +77,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
         decoding_watermarked_results = DtoDecode(
             decoded_watermark=decoded_watermarked,
             decoding_time=decoding_watermarked_time,
-            decoding_metrics=None,
+            decoding_metrics=decoding_watermarked_analysis_results,
         )
         # metric
         watermarked_analysis_results = img_metric.get_all(source_image, encoded_image)
@@ -110,6 +113,10 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
                     decoded_attacked, decoding_attacked_time = watermark.decode(
                         attacked_image
                     )
+                    decoding_atacked_analysis_results = get_decoding_metrics_model(
+                        watermark=decoded_attacked.encode(),
+                        decoded=dto.watermark.encode(),
+                    )
                 except Exception as e:
                     logger.log(
                         f"""Decoded watermark failed for path: {filepath},
@@ -120,7 +127,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
             decoding_results = DtoDecode(
                 decoded_watermark=decoded_attacked,
                 decoding_time=decoding_attacked_time,
-                decoding_metrics=None,
+                decoding_metrics=decoding_atacked_analysis_results,
             )
             # analysis
             attacked_analysis_results = None

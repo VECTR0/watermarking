@@ -1,7 +1,17 @@
 from pydantic import BaseModel
 
-from src.metric import ImageMetricsModel
-from src.types import AttackingAnalysisResults, ImageType
+
+class ImageMetricsModel(BaseModel):
+    PSNR: float
+    SSIM_RGB: float
+    SSIM_Greyscale: float
+    Bit_Error_Rate: float
+    Mean_Squared_Error: float
+    Entropy: float
+    Average_Pixel_Error: float
+    QualiCLIP_original: float
+    QualiCLIP_watermarked: float
+    LPIPS_Loss: float
 
 
 class DtoLog(BaseModel):
@@ -14,7 +24,10 @@ class DtoLog(BaseModel):
 
 
 class DecodingMetricsModel(BaseModel):
-    pass
+    Correlation_Coefficient: float
+    Normalized_Correlation_Coefficient: float
+    Bit_Error_Rate: float
+    Mean_Squared_Error: float
 
 
 class DtoDecode(BaseModel):
