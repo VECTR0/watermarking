@@ -14,15 +14,6 @@ class ImageMetricsModel(BaseModel):
     LPIPS_Loss: float | None
 
 
-class DtoLog(BaseModel):
-    filepath: str
-    watermarked_analysis_results: ImageMetricsModel
-    watermark_method: str
-    attack_method: str
-    encoding_time: float
-    decoding_time: float
-
-
 class DecodingMetricsModel(BaseModel):
     Correlation_Coefficient: float | None
     Normalized_Correlation_Coefficient: float | None
