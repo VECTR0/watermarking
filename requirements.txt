@@ -16,3 +16,4 @@ ftfy
 regex
 pydantic
 pydantic-settings
+tqdm

@@ -53,6 +53,8 @@ def correlation_coefficient(a: bytes, b: bytes) -> float:
     """
     original_flat = np.frombuffer(a, dtype=np.uint8)
     watermarked_flat = np.frombuffer(b, dtype=np.uint8)
+    if np.std(original_flat) == 0 or np.std(watermarked_flat) == 0:
+        return float("inf")
     correlation_matrix = np.corrcoef(original_flat, watermarked_flat)
     return correlation_matrix[0, 1]
 
@@ -63,9 +65,10 @@ def normalized_correlation_coefficient(a: bytes, b: bytes) -> float:
     """
     original_flat = np.frombuffer(a, dtype=np.uint8)
     watermarked_flat = np.frombuffer(b, dtype=np.uint8)
-    return np.dot(original_flat, watermarked_flat) / (
-        np.linalg.norm(original_flat) * np.linalg.norm(watermarked_flat)
-    )
+    div = np.linalg.norm(original_flat) * np.linalg.norm(watermarked_flat)
+    if div == 0:
+        return float("inf")
+    return np.dot(original_flat, watermarked_flat) / div
 
 
 def bit_error_rate(a: bytes, b: bytes) -> float:

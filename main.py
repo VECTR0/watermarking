@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import cv2
+from tqdm import tqdm
 
 from src.attacker import (
     Attacker,
@@ -48,25 +49,30 @@ def get_image_paths(
 def process_image(filepath: str, img_metric: ImageMetrics) -> None:
     source_image = cv2.imread(filepath)
     w, h = source_image.shape[:2]
-    print(f"Processing image: {w}x{h}px {os.path.basename(filepath)}")
+    logger.log(
+        f"Processing image: {w}x{h}px {os.path.basename(filepath)}", level=Logger.DEBUG
+    )
     dto = Dto(
         filepath=filepath, watermark=config.default_watermark
     )  # Maybe move to global scope, because it sholud not change?
 
     for watermark in Watermarker.get_all():
-        print(f"  W: {watermark.get_name()}")
+        logger.log(f"  W: {watermark.get_name()}", level=Logger.DEBUG)
         # encode
         watermark_name = watermark.get_name()
         encoded_image, encoding_time = watermark.encode(source_image, dto.watermark)
         # decode
         decoded_watermarked, decoding_watermarked_time = None, float("nan")
+        decoding_watermarked_analysis_results = None
         try:
             decoded_watermarked, decoding_watermarked_time = watermark.decode(
                 encoded_image
             )
-            decoding_watermarked_analysis_results = get_decoding_metrics_model(
-                watermark=decoded_watermarked.encode(), decoded=dto.watermark.encode()
-            )
+            if decoded_watermarked is not None:
+                decoding_watermarked_analysis_results = get_decoding_metrics_model(
+                    watermark=decoded_watermarked.encode(),
+                    decoded=dto.watermark.encode(),
+                )
         except Exception as e:
             logger.log(
                 f"""Decoded watermark failed for path: {filepath},
@@ -91,7 +97,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
         dto.watermarks.append(dtoWatermark)
 
         for attacker in Attacker.get_all():
-            print(f"    A: {attacker.get_name()}")
+            logger.log(f"    A: {attacker.get_name()}", level=Logger.DEBUG)
             # attack
             attack_name = attacker.get_name()
             attacked_image, attacking_time = None, float("nan")
@@ -108,15 +114,17 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
 
             # decode
             decoded_attacked, decoding_attacked_time = None, float("nan")
+            decoding_atacked_analysis_results = None
             if attacked_image is not None:
                 try:
                     decoded_attacked, decoding_attacked_time = watermark.decode(
                         attacked_image
                     )
-                    decoding_atacked_analysis_results = get_decoding_metrics_model(
-                        watermark=decoded_attacked.encode(),
-                        decoded=dto.watermark.encode(),
-                    )
+                    if decoded_attacked is not None:
+                        decoding_atacked_analysis_results = get_decoding_metrics_model(
+                            watermark=decoded_attacked.encode(),
+                            decoded=dto.watermark.encode(),
+                        )
                 except Exception as e:
                     logger.log(
                         f"""Decoded watermark failed for path: {filepath},
@@ -176,12 +184,11 @@ def process_chunk(
 ) -> None:
     img_metric = ImageMetrics()
 
-    for fp in image_paths:
+    for fp in tqdm(image_paths):
         process_image(fp, img_metric)
 
 
 def main() -> None:
-    print("Starting...")
     # Watermarkers
     # TODO: fix lsb, fft
     # LSBWatermarker()
@@ -203,10 +210,9 @@ def main() -> None:
 
     # TODO: from .env
     dataset = get_image_paths(config.dataset_path)
-    print(f"Found {len(dataset)} images in the dataset.")
+    logger.log(f"Found {len(dataset)} images in the dataset.", level=Logger.INFO)
 
-    dataset_chunks = split_dataset(dataset, config.cores, trim_to=1)
-    print(f"Split dataset into {len(dataset_chunks)} chunks.")
+    dataset_chunks = split_dataset(dataset, config.cores, trim_to=10)
 
     process_chunk(0, dataset_chunks[0])
 
