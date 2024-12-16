@@ -17,6 +17,7 @@ from src.attacker import (
 from src.config import Logger, config, logger
 from src.dto import Dto, DtoAttack, DtoDecode, DtoWatermark
 from src.metric import ImageMetrics, get_decoding_metrics_model
+from src.utils import measure_time
 from src.watermarker import Watermarker
 from src.watermarkers.dwt_dct_svd_watermarker import DwtDctSvdWatermarker
 from src.watermarkers.dwt_dct_watermarker import DwtDctWatermarker
@@ -62,7 +63,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
         watermark_name = watermark.get_name()
         encoded_image, encoding_time = watermark.encode(source_image, dto.watermark)
         # decode
-        decoded_watermarked, decoding_watermarked_time = None, float("nan")
+        decoded_watermarked, decoding_watermarked_time = None, None
         decoding_watermarked_analysis_results = None
         try:
             decoded_watermarked, decoding_watermarked_time = watermark.decode(
@@ -100,10 +101,11 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
             logger.log(f"    A: {attacker.get_name()}", level=Logger.DEBUG)
             # attack
             attack_name = attacker.get_name()
-            attacked_image, attacking_time = None, float("nan")
+            attacked_image, attacking_time = None, None
             try:
-                attacked_image = attacker.attack(encoded_image)  # TODO add time?
-                attacking_time = float("nan")  # TODO add time?
+                attacked_image, attacking_time = measure_time(
+                    attacker.attack, encoded_image
+                )
             except Exception as e:
                 logger.log(
                     f"""Decoded attack failed for path: {filepath},
@@ -113,7 +115,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
                 )
 
             # decode
-            decoded_attacked, decoding_attacked_time = None, float("nan")
+            decoded_attacked, decoding_attacked_time = None, None
             decoding_atacked_analysis_results = None
             if attacked_image is not None:
                 try:
@@ -195,15 +197,15 @@ def main() -> None:
     # FFTWatermarker()
     DwtDctWatermarker()
     DwtDctSvdWatermarker()
-    # RivaGanWatermarker()
+    RivaGanWatermarker()
 
     # Attackers
-    # BlurAttacker(kernel_size=1)
-    # BlurAttacker(kernel_size=3)
-    # JpegCompressionAttacker(quality=5)
-    # JpegCompressionAttacker(quality=50)
-    # JpegCompressionAttacker(quality=75)
-    # NoiseAdditionAttacker(intesity=0.1)
+    BlurAttacker(kernel_size=1)
+    BlurAttacker(kernel_size=3)
+    JpegCompressionAttacker(quality=5)
+    JpegCompressionAttacker(quality=50)
+    JpegCompressionAttacker(quality=75)
+    NoiseAdditionAttacker(intesity=0.1)
     # CloneStampAttacker()
     # OverlayAttacker()
     # WarpingAttacker()
@@ -212,7 +214,7 @@ def main() -> None:
     dataset = get_image_paths(config.dataset_path)
     logger.log(f"Found {len(dataset)} images in the dataset.", level=Logger.INFO)
 
-    dataset_chunks = split_dataset(dataset, config.cores, trim_to=10)
+    dataset_chunks = split_dataset(dataset, config.cores, trim_to=100)
 
     process_chunk(0, dataset_chunks[0])
 

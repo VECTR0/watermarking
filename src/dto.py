@@ -11,7 +11,7 @@ class ImageMetricsModel(BaseModel):
     Average_Pixel_Error: float
     QualiCLIP_original: float
     QualiCLIP_watermarked: float
-    LPIPS_Loss: float
+    LPIPS_Loss: float | None
 
 
 class DtoLog(BaseModel):
@@ -24,21 +24,21 @@ class DtoLog(BaseModel):
 
 
 class DecodingMetricsModel(BaseModel):
-    Correlation_Coefficient: float
-    Normalized_Correlation_Coefficient: float
+    Correlation_Coefficient: float | None
+    Normalized_Correlation_Coefficient: float | None
     Bit_Error_Rate: float
     Mean_Squared_Error: float
 
 
 class DtoDecode(BaseModel):
     decoded_watermark: str | None  # TODO change to bytes?
-    decoding_time: float
+    decoding_time: float | None
     decoding_metrics: DecodingMetricsModel | None
 
 
 class DtoAttack(BaseModel):
     name: str
-    attacking_time: float
+    attacking_time: float | None
     decoding_results: DtoDecode
     analysis_results: ImageMetricsModel | None
 
