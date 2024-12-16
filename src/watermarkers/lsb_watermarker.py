@@ -1,13 +1,13 @@
 import numpy as np
 
-from src.dto import Dto, ImageType
+from src.dto import ImageType
 from src.utils import measure_time
 from src.watermarker import DecodingResults, EncodingResults, Watermarker
 
 
 class LSB:
     @staticmethod
-    def encode(image: np.ndarray, watermark: str) -> np.ndarray:
+    def encode(image: ImageType, watermark: str) -> EncodingResults:
         """
         Encodes a watermark into an image using LSB (Least Significant Bit).
         Modifies the least significant bit of each pixel to encode the watermark.
@@ -27,7 +27,7 @@ class LSB:
         return image
 
     @staticmethod
-    def decode(image: np.ndarray) -> str:
+    def decode(image: ImageType) -> str:
         """
         Decodes the watermark from an image using LSB (Least Significant Bit).
         Extracts the watermark by reading the least significant bits of the pixels.
@@ -53,15 +53,8 @@ class LSBWatermarker(Watermarker):
     def __init__(self) -> None:
         super().__init__()
 
-    def encode(self, dto: Dto) -> EncodingResults:
-        image, watermark = super().validate_encode_input(dto)
-
+    def encode(self, image: ImageType, watermark: str) -> EncodingResults:
         watermarked_image, time_taken = measure_time(LSB.encode)(image, watermark)
-
-        new_dto = dto.copy()
-        new_dto.watermarked_image = watermarked_image
-        new_dto.encoding_time = time_taken
-
         return watermarked_image, time_taken
 
     def decode(self, image: ImageType) -> DecodingResults:

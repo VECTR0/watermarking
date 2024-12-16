@@ -20,7 +20,7 @@ class Watermarker(ABC):
     # TODO: super decorator
     # TODO: move dto.watermark str to arg here
     @abstractmethod
-    def encode(self, dto: "Dto", watermark: str) -> EncodingResults:
+    def encode(self, image: "ImageType", watermark: str) -> EncodingResults:
         pass
 
     @abstractmethod
@@ -29,13 +29,3 @@ class Watermarker(ABC):
 
     def get_name(self) -> str:
         return self.__class__.__name__
-
-    def validate_encode_input(self, dto: "Dto") -> tuple[ImageType, str]:
-        image, watermark = dto.source_image, dto.watermark
-        assert isinstance(
-            image, ImageType
-        ), f"Expected image of type ImageType, but got {type(image)}"
-        assert isinstance(
-            watermark, str
-        ), f"Expected watermark to be a string, but got {type(watermark)}"
-        return image, watermark

@@ -1,6 +1,3 @@
-import copy
-
-import cv2
 from pydantic import BaseModel
 
 from src.metric import ImageMetricsModel
@@ -16,24 +13,32 @@ class DtoLog(BaseModel):
     decoding_time: float
 
 
-class Dto:
-    # TODO: The use of Optional None is somewhat inconvenient. Maybe enforce non-None?
+class DecodingMetricsModel(BaseModel):
+    pass
 
-    def __init__(self, filepath: str) -> None:
-        self.filepath = filepath
-        self.source_image: ImageType = self.load_image()
 
-        self.watermarked_image: ImageType | None = None
-        self.watermark: str | None = None
-        self.watermarked_analysis_results: ImageMetricsModel | None = None
+class DtoDecode(BaseModel):
+    decoded_watermark: str | None  # TODO change to bytes?
+    decoding_time: float
+    decoding_metrics: DecodingMetricsModel | None
 
-        self.decoded_watermark: str | None = None
 
-        self.attacked_image: ImageType | None = None
-        self.attacked_analysis_results: list[AttackingAnalysisResults] | None = None
+class DtoAttack(BaseModel):
+    name: str
+    attacking_time: float
+    decoding_results: DtoDecode
+    analysis_results: ImageMetricsModel | None
 
-    def load_image(self) -> ImageType:
-        return cv2.imread(self.filepath)
 
-    def copy(self) -> "Dto":
-        return copy.deepcopy(self)
+class DtoWatermark(BaseModel):
+    name: str
+    encoding_time: float
+    decoding_results: DtoDecode
+    analysis_results: ImageMetricsModel | None
+    attacks: list[DtoAttack] = []
+
+
+class Dto(BaseModel):
+    filepath: str
+    watermark: str
+    watermarks: list[DtoWatermark] = []

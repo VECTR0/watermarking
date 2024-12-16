@@ -82,9 +82,12 @@ class ImageMetrics:
             Mean_Squared_Error=float(self.__mean_squared_error()),
             Entropy=float(self.__entropy()),
             Average_Pixel_Error=float(self.__average_pixel_error()),
-            QualiCLIP_original=float(self.__quali_clip(original=True)),
-            QualiCLIP_watermarked=float(self.__quali_clip(original=False)),
-            LPIPS_Loss=self.__lpips_loss(),
+            QualiCLIP_original=float("nan"),  # TODO fix ML models performance
+            # QualiCLIP_original=float(self.__quali_clip(original=True)),
+            QualiCLIP_watermarked=float("nan"),
+            # QualiCLIP_watermarked=float(self.__quali_clip(original=False)),
+            LPIPS_Loss=float("nan"),
+            # LPIPS_Loss=self.__lpips_loss(),
         )
 
     def _to_tensor(self, img: ImageType) -> torch.Tensor:

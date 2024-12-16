@@ -1,5 +1,8 @@
 import concurrent
+import json
 import os
+from pathlib import Path
+import cv2
 
 from src.attacker import (
     Attacker,
@@ -11,8 +14,7 @@ from src.attacker import (
     WarpingAttacker,
 )
 from src.config import Logger, config, logger
-from src.dto import Dto
-from src.dto_saver import DtoSaver
+from src.dto import Dto, DtoAttack, DtoDecode, DtoWatermark
 from src.metric import ImageMetrics
 from src.watermarker import Watermarker
 from src.watermarkers.dwt_dct_svd_watermarker import DwtDctSvdWatermarker
@@ -43,68 +45,111 @@ def get_image_paths(
     ]
 
 
-def process_image(
-    filepath: str, dto_saver: "DtoSaver", img_metric: ImageMetrics
-) -> None:
-    src_dto = Dto(filepath)
-    src_dto.watermark = (
-        config.default_watermark
-        # TODO: FIXME 4chars hardcoded (32bits) to ensure rivaGan works
-        # Maybe move to global scope, because it sholud not change?
-    )
+def process_image(filepath: str, img_metric: ImageMetrics) -> None:
+    source_image = cv2.imread(filepath)
+    w, h = source_image.shape[:2]
+    print(f"Processing image: {w}x{h}px {os.path.basename(filepath)}")
+    dto = Dto(
+        filepath=filepath, watermark=config.default_watermark
+    )  # Maybe move to global scope, because it sholud not change?
 
     for watermark in Watermarker.get_all():
-        watermark_name = watermark.get_name()
-        dto = src_dto.copy()
-
+        print(f"  W: {watermark.get_name()}")
         # encode
-        dto.watermark_method = watermark_name
-        encoded_image, encoding_time = watermark.encode(dto)
-        dto.watermarked_image = encoded_image
-        dto.encoding_time = encoding_time
+        watermark_name = watermark.get_name()
+        encoded_image, encoding_time = watermark.encode(source_image, dto.watermark)
         # decode
+        decoded_watermarked, decoding_watermarked_time = None, float("nan")
         try:
-            decoded_watermarked_str, decoding_watermarked_time = watermark.decode(
-                dto.watermarked_image
+            decoded_watermarked, decoding_watermarked_time = watermark.decode(
+                encoded_image
             )
-            dto.decoded_watermark = decoded_watermarked_str
-            dto.decoding_time = decoding_watermarked_time
-
         except Exception as e:
             logger.log(
-                f"""Decoded watermark failed for path: {dto.filepath},
+                f"""Decoded watermark failed for path: {filepath},
                 with method {watermark_name}.
                 Error: {e!s}""",
                 level=Logger.ERROR,
             )
-        # metric
-        dto.watermarked_analysis_results = img_metric.get_all(
-            dto.source_image, dto.watermarked_image
+        decoding_watermarked_results = DtoDecode(
+            decoded_watermark=decoded_watermarked,
+            decoding_time=decoding_watermarked_time,
+            decoding_metrics=None,
         )
-        for attacker in Attacker.get_all():
-            attack_name = attacker.get_name()
-            attacked_dto = dto.copy()
+        # metric
+        watermarked_analysis_results = img_metric.get_all(source_image, encoded_image)
 
+        dtoWatermark = DtoWatermark(
+            name=watermark_name,
+            encoding_time=encoding_time,
+            decoding_results=decoding_watermarked_results,
+            analysis_results=watermarked_analysis_results,
+        )
+        dto.watermarks.append(dtoWatermark)
+
+        for attacker in Attacker.get_all():
+            print(f"    A: {attacker.get_name()}")
             # attack
-            attacked_dto.attack_method = attack_name
+            attack_name = attacker.get_name()
+            attacked_image, attacking_time = None, float("nan")
             try:
-                attacked_image = attacker.attack(dto)
-                attacked_dto.attacked_image = attacked_image
-                # # decode
-                # decoded_attacked_str, decoding_attacked_time = watermark.decode(
-                #     attacked_dto.attacked_image
-                # )
-                attacked_dto.attacked_analysis_results = img_metric.get_all(
-                    attacked_dto.source_image, attacked_dto.attacked_image
-                )
+                attacked_image = attacker.attack(encoded_image)  # TODO add time?
+                attacking_time = float("nan")  # TODO add time?
             except Exception as e:
                 logger.log(
-                    f"""Decoded attack failed for path: {dto.filepath},
+                    f"""Decoded attack failed for path: {filepath},
                     with attack method {attack_name}.
                     Error: {e!s}""",
                     level=Logger.ERROR,
                 )
-            dto_saver.add(attacked_dto)
+
+            # decode
+            decoded_attacked, decoding_attacked_time = None, float("nan")
+            if attacked_image is not None:
+                try:
+                    decoded_attacked, decoding_attacked_time = watermark.decode(
+                        attacked_image
+                    )
+                except Exception as e:
+                    logger.log(
+                        f"""Decoded watermark failed for path: {filepath},
+                        with method {watermark_name}.
+                        Error: {e!s}""",
+                        level=Logger.ERROR,
+                    )
+            decoding_results = DtoDecode(
+                decoded_watermark=decoded_attacked,
+                decoding_time=decoding_attacked_time,
+                decoding_metrics=None,
+            )
+            # analysis
+            attacked_analysis_results = None
+            if attacked_image is not None:
+                attacked_analysis_results = img_metric.get_all(
+                    source_image, attacked_image
+                )
+
+            dtoAttack = DtoAttack(
+                name=attack_name,
+                attacking_time=attacking_time,
+                decoding_results=decoding_results,
+                analysis_results=attacked_analysis_results,
+            )
+            dtoWatermark.attacks.append(dtoAttack)
+    stripped_source_filename = os.path.basename(filepath)
+    filename = os.path.join(config.output_path, f"{stripped_source_filename}.json")
+    try:
+        with Path(filename).open("w") as fp:
+            # TODO: FIXME: now is different json format - is it ok?
+            serialized_data = dto.model_dump_json()
+            print(serialized_data)
+            print(f"   Saving to: {filename}")
+            # json.dump(serialized_data, fp, indent=4)
+        logger.log(f"Data saved to {filename}.", level=Logger.INFO)
+    except json.JSONDecodeError as e:
+        logger.log(f"JSON decoding error: {e}", level=Logger.ERROR)
+    except Exception as e:
+        logger.log(f"Failed to save data: {e}", level=Logger.ERROR)
 
 
 def split_dataset(
@@ -125,28 +170,24 @@ def process_chunk(
     n_core: int,
     image_paths: list[str],
 ) -> None:
-    dto_saver = DtoSaver()
     img_metric = ImageMetrics()
 
     for fp in image_paths:
-        process_image(fp, dto_saver, img_metric)
-    dto_saver.save_to_file(
-        os.path.join(config.output_path, f"output_no_watermark_core={n_core}.json"),
-        clear_current_list=True,
-    )
+        process_image(fp, img_metric)
 
 
 def main() -> None:
+    print("Starting...")
     # Watermarkers
     # TODO: fix lsb, fft
     # LSBWatermarker()
     # FFTWatermarker()
     DwtDctWatermarker()
     DwtDctSvdWatermarker()
-    RivaGanWatermarker()
+    # RivaGanWatermarker()
 
     # Attackers
-    BlurAttacker(kernel_size=1)
+    # BlurAttacker(kernel_size=1)
     # BlurAttacker(kernel_size=3)
     # JpegCompressionAttacker(quality=5)
     # JpegCompressionAttacker(quality=50)
@@ -158,18 +199,23 @@ def main() -> None:
 
     # TODO: from .env
     dataset = get_image_paths(config.dataset_path)
+    print(f"Found {len(dataset)} images in the dataset.")
 
-    dataset_chunks = split_dataset(dataset, config.cores, trim_to=12)
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        try:
-            futures = [
-                executor.submit(process_chunk, i, chunk)
-                for i, chunk in enumerate(dataset_chunks)
-            ]
-        except Exception as e:
-            logger.log(f"Process failed: {e}", level=Logger.ERROR)
+    dataset_chunks = split_dataset(dataset, config.cores, trim_to=1)
+    print(f"Split dataset into {len(dataset_chunks)} chunks.")
 
-        concurrent.futures.wait(futures)
+    process_chunk(0, dataset_chunks[0])
+
+    # with concurrent.futures.ProcessPoolExecutor() as executor:
+    #     try:
+    #         futures = [
+    #             executor.submit(process_chunk, i, chunk)
+    #             for i, chunk in enumerate(dataset_chunks)
+    #         ]
+    #     except Exception as e:
+    #         logger.log(f"Process failed: {e}", level=Logger.ERROR)
+
+    #     concurrent.futures.wait(futures)
 
 
 if __name__ == "__main__":
