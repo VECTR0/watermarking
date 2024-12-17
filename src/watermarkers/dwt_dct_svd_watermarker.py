@@ -15,7 +15,9 @@ class DwtDctSvdWatermarker(Watermarker):
 
         return watermarked_image, time_taken
 
-    def decode(self, image: ImageType) -> DecodingResults:
+    def decode(
+        self, image: ImageType, *, source: ImageType | None = None
+    ) -> DecodingResults:
         decoded, time_taken = measure_time(WatermarkInvisibleMethod.DWT_DCT_SVD.decode)(
             image
         )

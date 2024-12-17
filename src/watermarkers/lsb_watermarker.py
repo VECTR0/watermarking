@@ -55,6 +55,8 @@ class LSBWatermarker(Watermarker):
         watermarked_image, time_taken = measure_time(LSB.encode)(image, watermark)
         return watermarked_image, time_taken
 
-    def decode(self, image: ImageType) -> DecodingResults:
+    def decode(
+        self, image: ImageType, *, source: ImageType | None = None
+    ) -> DecodingResults:
         decoded, time_taken = measure_time(LSB.decode)(image)
         return decoded, time_taken

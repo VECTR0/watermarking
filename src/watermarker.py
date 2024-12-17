@@ -20,11 +20,13 @@ class Watermarker(ABC):
     # TODO: super decorator
     # TODO: move dto.watermark str to arg here
     @abstractmethod
-    def encode(self, image: "ImageType", watermark: str) -> EncodingResults:
+    def encode(self, image: ImageType, watermark: str) -> EncodingResults:
         pass
 
     @abstractmethod
-    def decode(self, image: "ImageType") -> DecodingResults:
+    def decode(
+        self, image: ImageType, *, source: ImageType | None = None
+    ) -> DecodingResults:
         pass
 
     def get_name(self) -> str:

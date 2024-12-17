@@ -25,6 +25,23 @@ class Attacker(ABC):
         return self.__class__.__name__
 
 
+class RescalingAttacker(Attacker):  # scales to and back simulating compression
+    def __init__(self, scale: float) -> None:
+        super().__init__()
+        self.scale = scale
+
+    def attack(self, watermarked_image: ImageType) -> ImageType:
+        h, w, _ = watermarked_image.shape
+        scaled_image = cv2.resize(
+            watermarked_image, (int(w * self.scale), int(h * self.scale))
+        )
+        scaled_image = cv2.resize(scaled_image, (w, h))
+        return scaled_image
+
+    def get_name(self) -> str:
+        return f"{super().get_name()} scale={self.scale}"
+
+
 class BlurAttacker(Attacker):
     def __init__(self, kernel_size: int) -> None:
         super().__init__()

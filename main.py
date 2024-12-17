@@ -67,7 +67,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
         decoding_watermarked_analysis_results = None
         try:
             decoded_watermarked, decoding_watermarked_time = watermark.decode(
-                encoded_image
+                encoded_image, source=source_image
             )
             if decoded_watermarked is not None:
                 decoding_watermarked_analysis_results = get_decoding_metrics_model(
@@ -103,8 +103,8 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
             attack_name = attacker.get_name()
             attacked_image, attacking_time = None, None
             try:
-                attacked_image, attacking_time = measure_time(
-                    attacker.attack, encoded_image
+                attacked_image, attacking_time = measure_time(attacker.attack)(
+                    encoded_image
                 )
             except Exception as e:
                 logger.log(
@@ -120,7 +120,7 @@ def process_image(filepath: str, img_metric: ImageMetrics) -> None:
             if attacked_image is not None:
                 try:
                     decoded_attacked, decoding_attacked_time = watermark.decode(
-                        attacked_image
+                        attacked_image, source=source_image
                     )
                     if decoded_attacked is not None:
                         decoding_atacked_analysis_results = get_decoding_metrics_model(
@@ -194,10 +194,10 @@ def main() -> None:
     # Watermarkers
     # TODO: fix lsb, fft
     # LSBWatermarker()
-    # FFTWatermarker()
-    DwtDctWatermarker()
-    DwtDctSvdWatermarker()
-    RivaGanWatermarker()
+    FFTWatermarker()
+    # DwtDctWatermarker()
+    # DwtDctSvdWatermarker()
+    # RivaGanWatermarker()
 
     # Attackers
     BlurAttacker(kernel_size=1)

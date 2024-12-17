@@ -15,7 +15,9 @@ class RivaGanWatermarker(Watermarker):
         )(image, watermark)
         return watermarked_image, time_taken
 
-    def decode(self, image: ImageType) -> DecodingResults:
+    def decode(
+        self, image: ImageType, *, source: ImageType | None = None
+    ) -> DecodingResults:
         decoded, time_taken = measure_time(WatermarkInvisibleMethod.RIVA_GAN.decode)(
             image
         )
