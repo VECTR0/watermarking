@@ -2,6 +2,7 @@ import concurrent
 import json
 import os
 from pathlib import Path
+import random
 import cv2
 from tqdm import tqdm
 
@@ -23,6 +24,7 @@ from src.watermarkers.dwt_dct_svd_watermarker import DwtDctSvdWatermarker
 from src.watermarkers.dwt_dct_watermarker import DwtDctWatermarker
 from src.watermarkers.fft_watermarker import FFTWatermarker
 from src.watermarkers.lsb_watermarker import LSBWatermarker
+from src.watermarkers.naive_watermarker import NaiveWatermarker
 from src.watermarkers.riva_gan_watermarker import RivaGanWatermarker
 
 
@@ -194,27 +196,36 @@ def main() -> None:
     # Watermarkers
     # TODO: fix lsb, fft
     # LSBWatermarker()
-    FFTWatermarker()
-    # DwtDctWatermarker()
-    # DwtDctSvdWatermarker()
-    # RivaGanWatermarker()
+    # FFTWatermarker()
+    DwtDctWatermarker()
+    DwtDctSvdWatermarker()
+    NaiveWatermarker(amount=0.05, scale=10, watermark_length=4)
+    NaiveWatermarker(amount=0.1, scale=8, watermark_length=4)
+    NaiveWatermarker(amount=0.2, scale=4, watermark_length=4)
+    NaiveWatermarker(amount=0.2, scale=2, watermark_length=4)
+    RivaGanWatermarker()
 
     # Attackers
     BlurAttacker(kernel_size=1)
     BlurAttacker(kernel_size=3)
+    BlurAttacker(kernel_size=11)
+    BlurAttacker(kernel_size=31)
     JpegCompressionAttacker(quality=5)
     JpegCompressionAttacker(quality=50)
     JpegCompressionAttacker(quality=75)
     NoiseAdditionAttacker(intesity=0.1)
+    NoiseAdditionAttacker(intesity=0.5)
+    NoiseAdditionAttacker(intesity=0.9)
     # CloneStampAttacker()
-    # OverlayAttacker()
+    OverlayAttacker()
     # WarpingAttacker()
 
     # TODO: from .env
     dataset = get_image_paths(config.dataset_path)
     logger.log(f"Found {len(dataset)} images in the dataset.", level=Logger.INFO)
+    random.shuffle(dataset)
 
-    dataset_chunks = split_dataset(dataset, config.cores, trim_to=100)
+    dataset_chunks = split_dataset(dataset, config.cores, trim_to=200)
 
     process_chunk(0, dataset_chunks[0])
 
