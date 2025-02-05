@@ -9,9 +9,9 @@ from src.utils import (
 )
 from src.watermarker import DecodingResults, EncodingResults, Watermarker
 from PIL import Image
-from src.watermarkers.VINE.src.vine_turbo import VINE_Turbo, VAE_decode, VAE_encode
+from src.watermarkers.vine.src.vine_turbo import VINE_Turbo, VAE_decode, VAE_encode
 from torchvision import transforms
-from src.watermarkers.VINE.src.stega_encoder_decoder import CustomConvNeXt
+from src.watermarkers.vine.src.stega_encoder_decoder import CustomConvNeXt
 
 pretrained_model_name="Shilin-LU/VINE-R-Enc"
 watermark_encoder = VINE_Turbo.from_pretrained(pretrained_model_name)
