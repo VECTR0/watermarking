@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+from src import config
 from src.types import ImageType
 from src.utils import (
     grayscale_image_to_watermark,
@@ -7,12 +8,14 @@ from src.utils import (
     watermark_to_grayscale_image,
 )
 from src.watermarker import DecodingResults, EncodingResults, Watermarker
-
-from .VINE.src.vine_turbo import VINE_Turbo, VAE_decode, VAE_encode
+from PIL import Image
+from src.watermarkers.VINE.src.vine_turbo import VINE_Turbo, VAE_decode, VAE_encode
 from torchvision import transforms
-from .VINE.src.stega_encoder_decoder import CustomConvNeXt
+from src.watermarkers.VINE.src.stega_encoder_decoder import CustomConvNeXt
 
-watermark_encoder = VINE_Turbo.from_pretrained(args.pretrained_model_name)
+pretrained_model_name="Shilin-LU/VINE-R-Enc"
+watermark_encoder = VINE_Turbo.from_pretrained(pretrained_model_name)
+watermark_encoder.to(config.device)
 # parser.add_argument(
 #     "--pretrained_model_name",
 #     type=str,
@@ -20,10 +23,9 @@ watermark_encoder = VINE_Turbo.from_pretrained(args.pretrained_model_name)
 #     help="pretrained_model_name",
 # )
 
-watermark_encoder.to(config.device)
 
-decoder = CustomConvNeXt.from_pretrained(args.pretrained_model_name)
-decoder.to(device)
+decoder = CustomConvNeXt.from_pretrained(pretrained_model_name)
+decoder.to(config.device)
 
 
 def crop_to_square(image):
@@ -40,11 +42,12 @@ def crop_to_square(image):
 
 
 class VineWatermarker(Watermarker):
-    def __init__(self, amount: float, scale: int, watermark_length: int) -> None:
+    def __init__(self) -> None:
+    # def __init__(self, amount: float, scale: int, watermark_length: int) -> None:
         super().__init__()
-        self.amount = amount
-        self.scale = scale
-        self.watermark_length = watermark_length
+        # self.amount = amount
+        # self.scale = scale
+        # self.watermark_length = watermark_length
 
     def __encode(self, image: ImageType, watermark: str) -> EncodingResults:
         # watermark_bytes = watermark.encode("utf-8")
@@ -62,7 +65,9 @@ class VineWatermarker(Watermarker):
 
     def encode(self, image: ImageType, watermark: str) -> EncodingResults:
         ### ============= load image =============
-        input_image_pil = Image.open(args.input_path).convert("RGB")  # 512x512
+        # input_image_pil = Image.open(args.input_path).convert("RGB")  # 512x512
+        input_image_pil = Image.fromarray(image).convert("RGB")  # 512x512
+        # input_image_pil = image.convert("RGB")  # 512x512
         if input_image_pil.size[0] != input_image_pil.size[1]:
             input_image_pil = crop_to_square(input_image_pil)
 
@@ -85,10 +90,10 @@ class VineWatermarker(Watermarker):
         resized_img = t_val_256(input_image_pil)  # 256x256
         resized_img = 2.0 * resized_img - 1.0
         input_image = (
-            transforms.ToTensor()(input_image_pil).unsqueeze(0).to(device)
+            transforms.ToTensor()(input_image_pil).unsqueeze(0).to(config.device)
         )  # 512x512
         input_image = 2.0 * input_image - 1.0
-        image = resized_img.unsqueeze(0).to(device)
+        image = resized_img.unsqueeze(0).to(config.device)
         ### ============= load message =============
         # if args.load_text: # text to bits
         if len(watermark) > 12:
@@ -170,7 +175,7 @@ class VineWatermarker(Watermarker):
         )
         # image = Image.open(args.input_path).convert("RGB")
         image = image.convert("RGB")
-        image = t_val_256(image).unsqueeze(0).to(device)
+        image = t_val_256(image).unsqueeze(0).to(config.device)
 
         decoded, time_taken = measure_time(self.__decode)(image)
 
@@ -184,4 +189,4 @@ class VineWatermarker(Watermarker):
         return decoded, time_taken
 
     def get_name(self) -> str:
-        return f"{super().get_name()} amount={self.amount} scale={self.scale} length={self.watermark_length}"
+        return f"{super().get_name()}"

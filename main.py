@@ -26,6 +26,7 @@ from src.watermarkers.fft_watermarker import FFTWatermarker
 from src.watermarkers.lsb_watermarker import LSBWatermarker
 from src.watermarkers.naive_watermarker import NaiveWatermarker
 from src.watermarkers.riva_gan_watermarker import RivaGanWatermarker
+from src.watermarkers.vine_watermarker import VineWatermarker
 
 
 def get_image_paths(
@@ -197,6 +198,9 @@ def main() -> None:
     # TODO: fix lsb, fft
     # LSBWatermarker()
     # FFTWatermarker()
+    
+    VineWatermarker()
+    
     DwtDctWatermarker()
     DwtDctSvdWatermarker()
     NaiveWatermarker(amount=0.05, scale=10, watermark_length=4)
