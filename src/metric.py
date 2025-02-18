@@ -112,6 +112,7 @@ class ImageMetrics:
 
         :return: Dictionary where keys are metric names and values are calculated metric values.
         """
+        # TODO: FIXME: vine
         assert (
             original.shape == watermarked.shape
         ), "Images must have the same dimensions."

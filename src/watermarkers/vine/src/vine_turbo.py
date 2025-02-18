@@ -93,15 +93,10 @@ def initialize_vae(rank=4, return_lora_module_names=False):
     vae.requires_grad_(True)
     vae.train()
     # add the skip connection convs
-    # vae.decoder.skip_conv_1 = torch.nn.Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
-    # vae.decoder.skip_conv_2 = torch.nn.Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
-    # vae.decoder.skip_conv_3 = torch.nn.Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
-    # vae.decoder.skip_conv_4 = torch.nn.Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
-    vae.decoder.skip_conv_1 = torch.nn.Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).requires_grad_(True)
-    vae.decoder.skip_conv_2 = torch.nn.Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).requires_grad_(True)
-    vae.decoder.skip_conv_3 = torch.nn.Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).requires_grad_(True)
-    vae.decoder.skip_conv_4 = torch.nn.Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False).requires_grad_(True)
-
+    vae.decoder.skip_conv_1 = torch.nn.Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
+    vae.decoder.skip_conv_2 = torch.nn.Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
+    vae.decoder.skip_conv_3 = torch.nn.Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
+    vae.decoder.skip_conv_4 = torch.nn.Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False).cuda().requires_grad_(True)
     
     torch.nn.init.constant_(vae.decoder.skip_conv_1.weight, 1e-5)
     torch.nn.init.constant_(vae.decoder.skip_conv_2.weight, 1e-5)
@@ -127,16 +122,10 @@ def initialize_vae_no_lora(path="stabilityai/sd-turbo"):
     vae.decoder.forward = my_vae_decoder_fwd.__get__(vae.decoder, vae.decoder.__class__)
     vae.requires_grad_(True)
     vae.train()
-    # add the skip connection convs
-    # TODO: cuda vs cpu hanlde
-    # vae.decoder.skip_conv_1 = torch.nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
-    # vae.decoder.skip_conv_2 = torch.nn.Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
-    # vae.decoder.skip_conv_3 = torch.nn.Conv2d(128, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
-    # vae.decoder.skip_conv_4 = torch.nn.Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
-    vae.decoder.skip_conv_1 = torch.nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).requires_grad_(True)
-    vae.decoder.skip_conv_2 = torch.nn.Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).requires_grad_(True)
-    vae.decoder.skip_conv_3 = torch.nn.Conv2d(128, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).requires_grad_(True)
-    vae.decoder.skip_conv_4 = torch.nn.Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).requires_grad_(True)
+    vae.decoder.skip_conv_1 = torch.nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
+    vae.decoder.skip_conv_2 = torch.nn.Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
+    vae.decoder.skip_conv_3 = torch.nn.Conv2d(128, 512, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
+    vae.decoder.skip_conv_4 = torch.nn.Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=1, bias=True).cuda().requires_grad_(True)
     torch.nn.init.constant_(vae.decoder.skip_conv_1.weight, 1e-5)
     torch.nn.init.constant_(vae.decoder.skip_conv_2.weight, 1e-5)
     torch.nn.init.constant_(vae.decoder.skip_conv_3.weight, 1e-5)
@@ -148,8 +137,9 @@ def initialize_vae_no_lora(path="stabilityai/sd-turbo"):
 
 
 class VINE_Turbo(torch.nn.Module, PyTorchModelHubMixin):
-    def __init__(self, ckpt_path=None, device=config.device):
+    def __init__(self, ckpt_path=None):
         super().__init__()
+        device=config.device
         tokenizer = AutoTokenizer.from_pretrained("stabilityai/sd-turbo", subfolder="tokenizer", use_fast=False,)
         text_encoder = CLIPTextModel.from_pretrained("stabilityai/sd-turbo", subfolder="text_encoder")
         text_encoder.requires_grad_(False)
@@ -231,7 +221,7 @@ class VINE_Turbo(torch.nn.Module, PyTorchModelHubMixin):
         B = x.shape[0]
         x_sec = self.sec_encoder(secret, x)
         x_enc = self.vae_enc(x_sec, direction="a2b").to(x.dtype)
-        model_pred = self.unet(x_enc, self.timesteps, encoder_hidden_states=self.fixed_a2b_emb_base,).sample.to(x.dtype)
+        model_pred = self.unet(x_enc, self.timesteps, encoder_hidden_states=self.fixed_a2b_emb_base).sample.to(x.dtype)
         x_out = torch.stack([self.sched.step(model_pred[i], self.timesteps[i], x_enc[i], return_dict=True).prev_sample for i in range(B)])
         x_out_decoded = self.vae_dec(x_out, direction="a2b").to(x.dtype)
         return x_out_decoded
