@@ -13,7 +13,7 @@ from src.watermarkers.vine.src.vine_turbo import VINE_Turbo, VAE_decode, VAE_enc
 from torchvision import transforms
 from src.watermarkers.vine.src.stega_encoder_decoder import CustomConvNeXt
 
-pretrained_model_name="Shilin-LU/VINE-R-Enc"
+pretrained_model_name = "Shilin-LU/VINE-R-Enc"
 watermark_encoder = VINE_Turbo.from_pretrained(pretrained_model_name)
 watermark_encoder.to(config.device)
 # parser.add_argument(
@@ -43,7 +43,7 @@ def crop_to_square(image):
 
 class VineWatermarker(Watermarker):
     def __init__(self) -> None:
-    # def __init__(self, amount: float, scale: int, watermark_length: int) -> None:
+        # def __init__(self, amount: float, scale: int, watermark_length: int) -> None:
         super().__init__()
         # self.amount = amount
         # self.scale = scale
@@ -111,6 +111,7 @@ class VineWatermarker(Watermarker):
         #     watermark = watermark.to(device)
 
         encoded_image_256, time_taken = measure_time(self.__encode)(image, watermark)
+        print(encoded_image_256.shape, "\n\nencoded shape 0")
 
         ### ============= resolution scaling to original size =============
         residual_256 = encoded_image_256 - resized_img  # 256x256
@@ -118,6 +119,7 @@ class VineWatermarker(Watermarker):
         encoded_image = residual_512 + input_image  # 512x512 or original size
         encoded_image = encoded_image * 0.5 + 0.5
         encoded_image = torch.clamp(encoded_image, min=0.0, max=1.0)
+        print(encoded_image.shape, "\n\nencoded shape 1")
         return encoded_image, time_taken
 
     def __decode(
@@ -186,6 +188,8 @@ class VineWatermarker(Watermarker):
         # acc = same_elements_count / 100
         # print('Decoding Bit Accuracy:', acc)
         # decoded, time_taken = measure_time(self.DECODERRRRR)(image, source)
+        print(decoded.shape, "\n\decoded shape")
+
         return decoded, time_taken
 
     def get_name(self) -> str:

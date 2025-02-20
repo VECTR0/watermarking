@@ -198,16 +198,16 @@ def main() -> None:
     # TODO: fix lsb, fft
     # LSBWatermarker()
     # FFTWatermarker()
-    
+
     VineWatermarker()
-    
-    DwtDctWatermarker()
-    DwtDctSvdWatermarker()
-    NaiveWatermarker(amount=0.05, scale=10, watermark_length=4)
-    NaiveWatermarker(amount=0.1, scale=8, watermark_length=4)
-    NaiveWatermarker(amount=0.2, scale=4, watermark_length=4)
-    NaiveWatermarker(amount=0.2, scale=2, watermark_length=4)
-    RivaGanWatermarker()
+
+    # DwtDctWatermarker()
+    # DwtDctSvdWatermarker()
+    # NaiveWatermarker(amount=0.05, scale=10, watermark_length=4)
+    # NaiveWatermarker(amount=0.1, scale=8, watermark_length=4)
+    # NaiveWatermarker(amount=0.2, scale=4, watermark_length=4)
+    # NaiveWatermarker(amount=0.2, scale=2, watermark_length=4)
+    # RivaGanWatermarker()
 
     # Attackers
     BlurAttacker(kernel_size=1)
@@ -229,7 +229,7 @@ def main() -> None:
     logger.log(f"Found {len(dataset)} images in the dataset.", level=Logger.INFO)
     random.shuffle(dataset)
 
-    dataset_chunks = split_dataset(dataset, config.cores, trim_to=200)
+    dataset_chunks = split_dataset(dataset, config.cores, trim_to=10)
 
     process_chunk(0, dataset_chunks[0])
 

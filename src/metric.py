@@ -12,6 +12,7 @@ from torchvision import transforms
 from src.config import Logger, config, logger
 from src.dto import DecodingMetricsModel, ImageMetricsModel
 from src.types import ImageType
+import torchvision.transforms.functional as TF
 
 
 class LPIPSModel(Enum):
@@ -112,13 +113,30 @@ class ImageMetrics:
 
         :return: Dictionary where keys are metric names and values are calculated metric values.
         """
-        # TODO: FIXME: vine
-        assert (
-            original.shape == watermarked.shape
-        ), "Images must have the same dimensions."
+        # # TODO: FIXME: vine
+
         self.original = original
+        # handle VINE reszie
+        if isinstance(watermarked, torch.Tensor):
+            watermarked = watermarked.cpu().detach()  # Usuń z GPU, odłącz autograd
+            watermarked = watermarked.squeeze(0)  # Usuń wymiar batch (jeśli istnieje)
+
+            # Pobierz docelowy rozmiar (x, y)
+            target_shape = (original.shape[0], original.shape[1])  # (x, y)
+
+            # Przeskaluj tensor do docelowego kształtu
+            watermarked = TF.resize(watermarked, target_shape, antialias=True)
+
+            # Konwersja do numpy
+            watermarked = watermarked.numpy().transpose(
+                1, 2, 0
+            )  # Zamiana osi (H, W, C)
+
         self.watermarked = watermarked
 
+        assert (
+            self.original.shape == self.watermarked.shape
+        ), "Images must have the same dimensions."
         # TODO: remove unnecessary float casting
         return ImageMetricsModel(
             PSNR=float(self.__psnr()),
